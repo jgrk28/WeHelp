@@ -1,0 +1,219 @@
+/* Basic styling */
+
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+  }
+  body {
+	font-size: 20px;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+	  Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  }
+  nav {
+	overflow: hidden;
+	background-color: #ffffff;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	padding: 0 10px;
+  }
+  a {
+	text-decoration: none;
+	color: #111111;
+  }
+  button {
+	font-size: 19px;
+  }
+  input {
+	font-size: 16px;
+  }
+  .menu {
+	list-style-type: none;
+  }
+  .logo {
+	padding: 10px;
+	flex: 1;
+  }
+  .item {
+	padding: 10px;
+  }
+  .toggle {
+	padding: 10px;
+  }
+  .main {
+	margin-top: 68px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+  }
+  .header {
+	display: flex;
+	height: 300px;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	background: #dcf3fa;
+  }
+  .header h1 {
+	font-size: 40px;
+  }
+  .attractions {
+	display: flex;
+	flex-wrap: wrap;
+	max-width: 90%;
+	margin: 20px 0;
+	justify-content: center;
+	align-items: flex-start;
+  }
+  .attraction {
+	margin: 10px;
+	text-align: center;
+	background-color: #dcf3fa;
+	align-self: stretch;
+  }
+  .attraction p {
+	padding: 10px;
+  }
+  .attraction img {
+	aspect-ratio: 4/3;
+	object-fit: cover;
+	width: 100%;
+  }
+  
+  .popup-blur {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 5;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.4);
+	backdrop-filter: blur(15px);
+  }
+  .form-popup {
+	display: none;
+	position: fixed;
+	top: 100px;
+	left: 0;
+	transform: translate(calc(50vw - 50%));
+	z-index: 10;
+  }
+  .form-container {
+	max-width: 330px;
+	padding: 15px;
+	background-color: white;
+	border-radius: 5px;
+  }
+  .form-container input[type="text"],
+  .form-container input[type="password"] {
+	width: 100%;
+	padding: 15px;
+	margin: 0 0 15px 0;
+	border: none;
+	border-radius: 5px;
+	background: #f1f1f1;
+  }
+  .form-container input[type="text"]:focus,
+  .form-container input[type="password"]:focus {
+	outline: none;
+  }
+  .form-container .form-header {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 15px;
+  }
+  .form-container .form-header a {
+	position: absolute;
+	top: 0;
+	right: 0;
+  }
+  .form-container .btn {
+	background-color: #52b3d1;
+	color: white;
+	padding: 14px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	width: 100%;
+	margin-bottom: 10px;
+	opacity: 0.8;
+  }
+  .form-container .btn:hover,
+  .open-button:hover {
+	opacity: 1;
+  }
+  .form-warning-msg {
+	color: rgb(200, 0, 0);
+	font-size: 16px;
+  }
+  
+  .member-content {
+	padding: 20px;
+  }
+  
+  /* Mobile view */
+  
+  .menu {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+  }
+  .menu li a {
+	display: block;
+	padding: 15px 5px;
+  }
+  .item {
+	order: 3;
+	width: 100%;
+	text-align: center;
+	display: none;
+  }
+  .active .item {
+	display: block;
+  }
+  .toggle {
+	order: 1;
+  }
+  
+  /* Tablet view */
+  
+  @media all and (min-width: 600px) {
+	.menu {
+	  align-items: flex-start;
+	  flex-wrap: nowrap;
+	  background: none;
+	}
+	.logo {
+	  order: 0;
+	}
+	.item {
+	  order: 1;
+	  position: relative;
+	  display: block;
+	  width: auto;
+	}
+	.toggle {
+	  order: 2;
+	  display: none;
+	}
+	.attraction {
+	  flex: 1 0 34%; /* 2 images in a row */
+	}
+  }
+  
+  /* Desktop view */
+  
+  @media all and (min-width: 1200px) {
+	.attractions {
+	  max-width: 1200px;
+	}
+	.attraction {
+	  flex: 0 0 21%; /* 4 images in a row */
+	}
+  }

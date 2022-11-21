@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <title>My Website</title>
+</head>
+
+<body>
+    <div class="main">
+        <div class="header">
+            <h1>WeHelp Photo Sharing</h1>
+        </div>
+		<div>
+			<button onclick="openForm()">Log In</button>
+		</div>
+		<div>
+			<button onclick="openForm()">Sign Up</button>
+		</div>
+    </div>
+    <div class="popup-blur" id="blur"></div>
+    <div class="form-popup" id="signinFormPopup">
+        <form class="form-container" id="signinForm">
+            <div class="form-header">
+                <h2>Sign in</h2>
+                <a href="javascript:closeForm()"><i class="fas fa-times"></i></a>
+            </div>
+            <input type="text" placeholder="Enter email" name="email" id="email">
+            <input type="password" placeholder="Enter password" name="psw" id="psw">
+            <button type="submit" class="btn">Sign in</button>
+            <p class="form-warning-msg" id="formMessage"></p>
+        </form>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
