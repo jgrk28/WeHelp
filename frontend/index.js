@@ -1,12 +1,13 @@
 
 function openForm(formId) {
-  document.getElementById(formId).style.display = 'block';
+  document.getElementById(formId).style.display = "block";
   document.getElementById("blur").style.display = "block";
 }
 
-function closeForm(formId) {
+function closeForm(formId, messageId) {
   document.getElementById(formId).style.display = "none";
   document.getElementById("blur").style.display = "none";
+  document.getElementById(messageId).innerHTML = "";
 }
 
 const loginForm = document.getElementById("loginForm");
@@ -28,7 +29,7 @@ function validateLoginInput() {
   let psw = document.getElementById("login-psw").value;
   if (!email || !psw) {
     document.getElementById("loginFormMessage").innerHTML =
-      "Please enter email and password.";
+      "Please fill in all fields.";
     return false;
   }
   return true;
@@ -70,7 +71,6 @@ async function login() {
   } catch (error) {
     console.log(error.response);
     if (error.response.data) {
-      setCookie("sessionId", response.sessionId, 5);
       document.getElementById("loginFormMessage").innerHTML = error.response.data;
     }
   }
@@ -88,6 +88,7 @@ async function signup() {
       data: body,
     });
     if (response.status == 200) {
+      setCookie("sessionId", response.sessionId, 5);
       window.location.href = "/member";
     }
   } catch (error) {
@@ -106,13 +107,13 @@ function setCookie(name, value, expDays) {
 }
 
 function getCookie(name) {
-  let name = name + "=";
+  name += "=";
   let decodedCookie = decodeURIComponent(document.cookie);
   let cookies = decodedCookie.split(';');
   for(let i = 0; i <cookies.length; i++) {
     let cookie = cookies[i];
     while (cookie.charAt(0) == ' ') {
-	  cookie = cookie.substring(1);
+	    cookie = cookie.substring(1);
     }
     if (cookie.indexOf(name) == 0) {
       return cookie.substring(name.length, cookie.length);

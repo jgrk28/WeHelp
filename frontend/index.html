@@ -2,29 +2,32 @@
 <html lang="en">
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
     <title>My Website</title>
 </head>
 
 <body>
+    <nav>
+        <ul class="menu">
+            <li class="logo"><a href="/">WinstaGram</a></li>
+            <li class="item"><button class="menu-button" onclick="openForm('loginFormPopup')">Log in</button></li>
+            <li class="item"><button class="menu-button" onclick="openForm('signupFormPopup')">Sign up</button></li>
+            <li class="toggle"><a href="#"><i class="fas fa-bars"></i></a></li>
+        </ul>
+    </nav>
     <div class="main">
         <div class="header">
             <h1>WeHelp Photo Sharing</h1>
         </div>
-		<div>
-			<button onclick="openForm('loginFormPopup')">Log in</button>
-		</div>
-		<div>
-			<button onclick="openForm('signupFormPopup')">Sign up</button>
-		</div>
     </div>
     <div class="popup-blur" id="blur"></div>
     <div class="form-popup" id="loginFormPopup">
         <form class="form-container" id="loginForm">
             <div class="form-header">
                 <h2>Log in</h2>
-                <button onclick="closeForm('loginFormPopup')" class="x-button">close</button>
+                <button type="reset" onclick="closeForm('loginFormPopup', 'loginFormMessage')" class="x-button"><i class="fas fa-times"></i></button>
             </div>
             <input type="text" placeholder="Enter email" name="login-email" id="login-email">
             <input type="password" placeholder="Enter password" name="login-psw" id="login-psw">
@@ -36,7 +39,7 @@
         <form class="form-container" id="signupForm">
             <div class="form-header">
                 <h2>Sign up</h2>
-                <button onclick="closeForm('signupFormPopup')" class="x-button">close</button>
+                <button type="reset" onclick="closeForm('signupFormPopup', 'signupFormMessage')" class="x-button"><i class="fas fa-times"></i></button>
             </div>
             <input type="text" placeholder="Enter email" name="signup-email" id="signup-email">
             <input type="password" placeholder="Enter password" name="signup-psw" id="signup-psw">
@@ -48,6 +51,8 @@
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="index.js"></script>
+    <script src="menu.js"></script>
+    
 </body>
 
 </html>
