@@ -2,15 +2,18 @@ const express = require("express");
 const path = require("path");
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
+require("dotenv").config()
 
 const app = express();
 const port = 3000;
+console.log(process.env)
+console.log(process.env.MYSQL_HOST)
 
 const conn = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "password",
-  database: "winstagram"
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE
 });
 conn.connect((err) => {
   if (err) throw err;
