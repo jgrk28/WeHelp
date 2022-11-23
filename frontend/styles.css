@@ -12,7 +12,6 @@
   }
   nav {
 	background-color: #ffffff;
-	box-shadow: 0 0 5px 0 #111111;
 	position: fixed;
 	top: 0;
 	width: 100%;
@@ -35,17 +34,17 @@
 	flex: 1;
   }
   .item {
-	padding: 10px;
+	padding: 15px;
 	align-self: center;
-	background-color: #e7e7e7;
   }
   .menu-button {
+	font-size: 16px;
 	border: none;
 	background-color: #ffffff00;
 	cursor: pointer;
   }
+  .logo a:hover, 
   .menu-button:hover {
-	border: none;
 	color: #676767;
   }
   .x-button {
@@ -149,7 +148,7 @@
   }
   
   /* Mobile view */
-  
+
   .menu {
 	display: flex;
 	flex-wrap: wrap;
@@ -163,8 +162,8 @@
   .item {
 	order: 3;
 	width: 100%;
-	text-align: center;
 	display: none;
+	border-top: 1px solid #eaeaea;
   }
   .active .item {
 	display: block;
@@ -189,6 +188,7 @@
 	  position: relative;
 	  display: block;
 	  width: auto;
+	  border: none;
 	}
 	.toggle {
 	  order: 2;
