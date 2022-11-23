@@ -56,7 +56,7 @@ function validateSignupInput() {
 async function login() {
   const body = {
     email: document.getElementById("login-email").value,
-    psw: document.getElementById("login-psw").value,
+    password: document.getElementById("login-psw").value,
   };
   try {
     let response = await axios({
@@ -79,7 +79,7 @@ async function login() {
 async function signup() {
   const body = {
     email: document.getElementById("signup-email").value,
-    psw: document.getElementById("signup-psw").value,
+    password: document.getElementById("signup-psw").value,
   };
   try {
     let response = await axios({
