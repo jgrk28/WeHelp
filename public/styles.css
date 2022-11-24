@@ -47,6 +47,9 @@
   .menu-button:hover {
 	color: #676767;
   }
+  .menu-text {
+	font-size: 16px;
+  }
   .x-button {
 	border: none;
 	background-color: #ffffff;

@@ -33,13 +33,16 @@ app.use(
   })
 );
 
+app.set('view engine', 'pug');
+app.set('views', './public')
+
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/index.html"));
+  res.render('index');
 });
 
 app.get("/member", (req, res) => {
   if (req.session.username) {
-    res.sendFile(path.join(__dirname, "public/member.html"));
+    res.render('member', { username: req.session.username})
   } else {
     res.redirect("/");
   }
