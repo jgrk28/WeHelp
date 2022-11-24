@@ -44,7 +44,7 @@ app.get("/member", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  let username = req.body.email;
+  let username = req.body.username;
   const sqlQuery = `SELECT password FROM users WHERE username = '${username}'`;
   conn.query(sqlQuery, (err, result) => {
     if (err) throw err;

@@ -25,9 +25,9 @@ signupForm.addEventListener("submit", (e) => {
 });
 
 function validateLoginInput() {
-  let email = document.getElementById("login-email").value;
+  let username = document.getElementById("login-username").value;
   let psw = document.getElementById("login-psw").value;
-  if (!email || !psw) {
+  if (!username || !psw) {
     document.getElementById("loginFormMessage").innerHTML =
       "Please fill in all fields.";
     return false;
@@ -36,11 +36,11 @@ function validateLoginInput() {
 }
 
 function validateSignupInput() {
-	let email = document.getElementById("signup-email").value;
+	let username = document.getElementById("signup-username").value;
 	let psw = document.getElementById("signup-psw").value;
 	let pswConfirm = document.getElementById("confirm-psw").value;
 
-	if (!email || !psw || !pswConfirm) {
+	if (!username || !psw || !pswConfirm) {
 	  document.getElementById("signupFormMessage").innerHTML =
 		"Please fill in all fields.";
 	  return false;
@@ -55,7 +55,7 @@ function validateSignupInput() {
 
 async function login() {
   const body = {
-    email: document.getElementById("login-email").value,
+    username: document.getElementById("login-username").value,
     password: document.getElementById("login-psw").value,
   };
   try {
@@ -77,7 +77,7 @@ async function login() {
 
 async function signup() {
   const body = {
-    email: document.getElementById("signup-email").value,
+    username: document.getElementById("signup-username").value,
     password: document.getElementById("signup-psw").value,
   };
   try {
