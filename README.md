@@ -7,4 +7,5 @@ MYSQL_HOST="<hostname>"
 MYSQL_USER="<username>"
 MYSQL_PASSWORD="<password>"
 MYSQL_DATABASE="<database>"
+SESSION_SECRET="<secret>"
 ```
