@@ -19,7 +19,7 @@ conn.connect((err) => {
   if (err) throw err;
   console.log("Connected!");
 });
-conn.query = util.promisify(conn.query).bind(conn);
+const promiseQuery = util.promisify(conn.query).bind(conn);
 
 app.use(express.static("public"));
 
@@ -80,13 +80,13 @@ app.post("/signup", async (req, res) => {
   const countQuery = `SELECT COUNT(*) FROM users WHERE username = '${username}'`;
   const insertQuery = `INSERT INTO users (username, password) VALUES ('${username}', '${password}')`;
   try {
-    let result = await conn.query(countQuery);
+    let result = await promiseQuery(countQuery);
     console.log(result);
     if (result[0]["COUNT(*)"] > 0) {
       res.status(409).send("Username already exists.");
       return;
     }
-    await conn.query(insertQuery);
+    await promiseQuery(insertQuery);
     req.session.username = username;
     res.sendStatus(200);
   } catch (error) {
