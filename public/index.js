@@ -1,4 +1,3 @@
-
 function openForm(formId) {
   document.getElementById(formId).style.display = "block";
   document.getElementById("blur").style.display = "block";
@@ -36,22 +35,22 @@ function validateLoginInput() {
 }
 
 function validateSignupInput() {
-	let username = document.getElementById("signup-username").value;
-	let psw = document.getElementById("signup-psw").value;
-	let pswConfirm = document.getElementById("confirm-psw").value;
+  let username = document.getElementById("signup-username").value;
+  let psw = document.getElementById("signup-psw").value;
+  let pswConfirm = document.getElementById("confirm-psw").value;
 
-	if (!username || !psw || !pswConfirm) {
-	  document.getElementById("signupFormMessage").innerHTML =
-		"Please fill in all fields.";
-	  return false;
-	}
-	if (psw != pswConfirm) {
-	  document.getElementById("signupFormMessage").innerHTML =
-	    "Passwords do not match.";
-	  return false;
-	}
-	return true;
+  if (!username || !psw || !pswConfirm) {
+    document.getElementById("signupFormMessage").innerHTML =
+      "Please fill in all fields.";
+    return false;
   }
+  if (psw != pswConfirm) {
+    document.getElementById("signupFormMessage").innerHTML =
+      "Passwords do not match.";
+    return false;
+  }
+  return true;
+}
 
 async function login() {
   const body = {
@@ -70,7 +69,8 @@ async function login() {
   } catch (error) {
     console.log(error.response);
     if (error.response.data) {
-      document.getElementById("loginFormMessage").innerHTML = error.response.data;
+      document.getElementById("loginFormMessage").innerHTML =
+        error.response.data;
     }
   }
 }
@@ -92,7 +92,8 @@ async function signup() {
   } catch (error) {
     console.log(error.response);
     if (error.response.data) {
-      document.getElementById("signupFormMessage").innerHTML = error.response.data;
+      document.getElementById("signupFormMessage").innerHTML =
+        error.response.data;
     }
   }
 }
