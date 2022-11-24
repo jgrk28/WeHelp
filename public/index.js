@@ -65,7 +65,6 @@ async function login() {
       data: body,
     });
     if (response.status == 200) {
-      setCookie("sessionId", response.sessionId, 5);
       window.location.href = "/member";
     }
   } catch (error) {
@@ -88,7 +87,6 @@ async function signup() {
       data: body,
     });
     if (response.status == 200) {
-      setCookie("sessionId", response.sessionId, 5);
       window.location.href = "/member";
     }
   } catch (error) {
@@ -97,27 +95,4 @@ async function signup() {
       document.getElementById("signupFormMessage").innerHTML = error.response.data;
     }
   }
-}
-
-function setCookie(name, value, expDays) {
-  const d = new Date();
-  d.setTime(d.getTime() + (expDays*24*60*60*1000));
-  let expires = "expires="+ d.toUTCString();
-  document.cookie = name + "=" + value + ";" + expires + ";path=/";
-}
-
-function getCookie(name) {
-  name += "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let cookies = decodedCookie.split(';');
-  for(let i = 0; i <cookies.length; i++) {
-    let cookie = cookies[i];
-    while (cookie.charAt(0) == ' ') {
-	    cookie = cookie.substring(1);
-    }
-    if (cookie.indexOf(name) == 0) {
-      return cookie.substring(name.length, cookie.length);
-    }
-  }
-  return "";
 }
