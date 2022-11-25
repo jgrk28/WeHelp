@@ -1,15 +1,15 @@
-const express = require("express");
-const path = require("path");
-const mysql = require("mysql");
-const bodyParser = require("body-parser");
-const session = require("express-session");
-const util = require("util");
-require("dotenv").config();
+import express from "express";
+import { createConnection } from "mysql";
+import parser from "body-parser";
+import session from "express-session";
+import { promisify } from "util";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const port = 3000;
 
-const conn = mysql.createConnection({
+const conn = createConnection({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
@@ -19,11 +19,11 @@ conn.connect((err) => {
   if (err) throw err;
   console.log("Connected!");
 });
-const promiseQuery = util.promisify(conn.query).bind(conn);
+const promiseQuery = promisify(conn.query).bind(conn);
 
 app.use(express.static("public"));
 
-app.use(bodyParser.json());
+app.use(parser.json());
 
 app.use(
   session({
@@ -37,7 +37,7 @@ app.set('view engine', 'pug');
 app.set('views', './public')
 
 app.get("/", (req, res) => {
-  res.render('index');
+  res.render('index', { username: req.session.username });
 });
 
 app.get("/member", (req, res) => {
@@ -82,7 +82,6 @@ app.post("/signup", async (req, res) => {
   const insertQuery = `INSERT INTO users (username, password) VALUES ('${username}', '${password}')`;
   try {
     let result = await promiseQuery(countQuery);
-    console.log(result);
     if (result[0]["COUNT(*)"] > 0) {
       res.status(409).send("Username already exists.");
       return;

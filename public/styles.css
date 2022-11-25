@@ -4,79 +4,95 @@
 	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
-  }
-  body {
+}
+
+body {
 	font-size: 20px;
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-	  Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  }
-  nav {
+		Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+nav {
 	background-color: #ffffff;
 	position: fixed;
 	top: 0;
 	width: 100%;
-  }
-  a {
+}
+
+a {
 	text-decoration: none;
 	color: #111111;
-  }
-  button {
+}
+
+button {
 	font-size: 18px;
-  }
-  input {
+}
+
+input {
 	font-size: 16px;
-  }
-  .menu {
+}
+
+.menu {
 	list-style-type: none;
-  }
-  .logo {
+}
+
+.logo {
 	padding: 10px;
 	flex: 1;
-  }
-  .item {
+}
+
+.item {
 	padding: 15px;
 	align-self: center;
-  }
-  .menu-button {
+}
+
+.menu-button {
 	font-size: 16px;
 	border: none;
 	background-color: #ffffff00;
 	cursor: pointer;
-  }
-  .logo a:hover, 
-  .menu-button:hover {
+}
+
+.logo a:hover,
+.menu-button:hover {
 	color: #676767;
-  }
-  .menu-text {
+}
+
+.menu-text {
 	font-size: 16px;
-  }
-  .x-button {
+}
+
+.x-button {
 	border: none;
 	background-color: #ffffff;
 	cursor: pointer;
-  }
-  .toggle {
+}
+
+.toggle {
 	padding: 10px;
-  }
-  .main {
+}
+
+.main {
 	margin-top: 74px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-  }
-  .header {
+}
+
+.header {
 	display: flex;
 	height: 300px;
 	width: 100%;
 	justify-content: center;
 	align-items: center;
 	background: #dcf3fa;
-  }
-  .header h1 {
+}
+
+.header h1 {
 	font-size: 30px;
-  }
-  
-  .popup-blur {
+}
+
+.popup-blur {
 	display: none;
 	position: fixed;
 	top: 0;
@@ -86,47 +102,54 @@
 	height: 100vh;
 	background-color: rgba(0, 0, 0, 0.4);
 	backdrop-filter: blur(15px);
-  }
-  .form-popup {
+}
+
+.form-popup {
 	display: none;
 	position: fixed;
 	top: 100px;
 	left: 0;
 	transform: translate(calc(50vw - 50%));
 	z-index: 10;
-  }
-  .form-container {
+}
+
+.form-container {
 	max-width: 330px;
 	padding: 15px;
 	background-color: white;
 	border-radius: 5px;
-  }
-  .form-container input[type="text"],
-  .form-container input[type="password"] {
+}
+
+.form-container input[type="text"],
+.form-container input[type="password"] {
 	width: 100%;
 	padding: 15px;
 	margin: 0 0 15px 0;
 	border: none;
 	border-radius: 5px;
 	background: #f1f1f1;
-  }
-  .form-container input[type="text"]:focus,
-  .form-container input[type="password"]:focus {
+}
+
+.form-container input[type="text"]:focus,
+.form-container input[type="password"]:focus {
 	outline: none;
-  }
-  .form-container .form-header {
+}
+
+.form-container .form-header {
 	position: relative;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin-bottom: 15px;
-  }
-  .form-container .form-header button {
+}
+
+.form-container .form-header button {
 	position: absolute;
 	top: 0;
 	right: 0;
-  }
-  .form-container .btn {
+}
+
+.form-container .btn {
 	background-color: #52b3d1;
 	color: white;
 	padding: 14px;
@@ -136,71 +159,78 @@
 	width: 100%;
 	margin-bottom: 10px;
 	opacity: 0.8;
-  }
-  .form-container .btn:hover,
-  .open-button:hover {
+}
+
+.form-container .btn:hover,
+.open-button:hover {
 	opacity: 1;
-  }
-  .form-warning-msg {
+}
+
+.form-warning-msg {
 	color: rgb(200, 0, 0);
 	font-size: 16px;
-  }
-  
-  .member-content {
-	padding: 20px;
-  }
-  
-  /* Mobile view */
+}
 
-  .menu {
+.member-content {
+	padding: 20px;
+}
+
+/* Mobile view */
+
+.menu {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
 	align-items: center;
-  }
-  .menu li a {
+}
+
+.menu .logo a {
 	display: block;
 	padding: 15px 5px;
-  }
-  .item {
+}
+
+.item {
 	order: 3;
 	width: 100%;
 	display: none;
 	border-top: 1px solid #eaeaea;
-  }
-  .active .item {
-	display: block;
-  }
-  .toggle {
-	order: 1;
-  }
-  
-  /* Tablet view */
-  
-  @media all and (min-width: 600px) {
-	.menu {
-	  align-items: flex-start;
-	  flex-wrap: nowrap;
-	  background: none;
-	}
-	.logo {
-	  order: 0;
-	}
-	.item {
-	  order: 1;
-	  position: relative;
-	  display: block;
-	  width: auto;
-	  border: none;
-	}
-	.toggle {
-	  order: 2;
-	  display: none;
-	}
-  }
-  
-  /* Desktop view */
-  
-  @media all and (min-width: 1200px) {
+}
 
-  }
+.active .item {
+	display: block;
+}
+
+.toggle {
+	order: 1;
+}
+
+/* Tablet view */
+
+@media all and (min-width: 600px) {
+	.menu {
+		align-items: flex-start;
+		flex-wrap: nowrap;
+		background: none;
+	}
+
+	.logo {
+		order: 0;
+	}
+
+	.item {
+		order: 1;
+		position: relative;
+		display: block;
+		width: auto;
+		border: none;
+	}
+
+	.toggle {
+		order: 2;
+		display: none;
+	}
+}
+
+/* Desktop view */
+
+@media all and (min-width: 1200px) {}

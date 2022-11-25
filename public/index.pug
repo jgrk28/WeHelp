@@ -3,15 +3,21 @@ head
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
   link(rel='stylesheet' href='styles.css')
   link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css')
-  title WinstaGram
+  title Winstagram
 nav
   ul.menu
     li.logo
-      a(href='/') WinstaGram
-    li.item
-      button.menu-button(onclick="openForm('loginFormPopup')") Log in
-    li.item
-      button.menu-button(onclick="openForm('signupFormPopup')") Sign up
+      a(href='/') Winstagram
+    if username
+      li.item
+        a.menu-button(href='member') Welcome, #{username}
+      li.item
+        button.menu-button(onclick="signOut()") Sign out
+    else
+      li.item
+        button.menu-button(onclick="openForm('loginFormPopup')") Log in
+      li.item
+        button.menu-button(onclick="openForm('signupFormPopup')") Sign up
     li.toggle
       a(href='#')
         i.fas.fa-bars
@@ -41,5 +47,5 @@ nav
     button.btn(type='submit') Sign up
     p#signupFormMessage.form-warning-msg
 script(src='https://unpkg.com/axios/dist/axios.min.js')
-script(src='index.js')
-script(src='menu.js')
+script(src='menu.js' type='module')
+script(src='index.js' type='module')
