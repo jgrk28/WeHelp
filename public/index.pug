@@ -55,7 +55,7 @@ nav
       h2 Upload image
       button.x-button(type='reset' onclick="closeForm('uploadFormPopup', 'uploadFormMessage')")
         i.fa-solid.fa-xmark
-    input#image-upload(type='file' name='image-upload' accept='image/png, image/jpeg')
+    input#image-upload(type='file' name='image-upload' accept='image/png, image/jpeg' required)
     button.btn(type='submit') Post
     p#uploadFormMessage.form-warning-msg
 script(src='https://unpkg.com/axios/dist/axios.min.js')

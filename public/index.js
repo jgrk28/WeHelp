@@ -30,23 +30,26 @@ signupForm.addEventListener("submit", (e) => {
 });
 
 const uploadForm = document.getElementById("uploadForm");
-  
+
 uploadForm.addEventListener("submit", (e) => {
-  let file = document.getElementById("image-upload");
+  let file = document.getElementById("image-upload").files[0];
   let message = document.getElementById("uploadFormMessage");
   e.preventDefault();
   uploadImage(file, message);
 });
 
 async function uploadImage(file, message) {
-  const body = {
-    file: file,
-  };
+  let fileBlob = await readFileToBlobAsync(file)
+
+  const form = new FormData();
+  form.append('file', fileBlob, file.name);
+
   try {
     let response = await axios({
       method: "POST",
       url: "/image",
-      data: body,
+      data: form,
+      headers: { "Content-Type": "multipart/form-data" },
     });
     if (response.status == 200) {
       location.reload();
@@ -57,4 +60,18 @@ async function uploadImage(file, message) {
       message.innerHTML = error.response.data;
     }
   }
+}
+
+function readFileToBlobAsync(file) {
+  return new Promise((resolve, reject) => {
+    let reader = new FileReader();
+
+    reader.onload = () => {
+      resolve(new Blob([reader.result]));
+    };
+
+    reader.onerror = reject;
+
+    reader.readAsArrayBuffer(file);
+  })
 }

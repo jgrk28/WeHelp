@@ -94,6 +94,13 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+// app.post("/image", (req, res) => {
+//   //confirm session exists?
+//   let username = req.session.username;
+//   let image = req.body.file;
+  
+// });
+
 app.listen(port, () => {
   console.log(`Example app listening on ${port}`);
 });
