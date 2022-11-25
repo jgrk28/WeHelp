@@ -92,6 +92,12 @@ input {
 	font-size: 30px;
 }
 
+.upload-button {
+	position: fixed;
+	bottom: 30px;
+	size: 50px;
+}
+
 .popup-blur {
 	display: none;
 	position: fixed;

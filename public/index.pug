@@ -2,7 +2,7 @@ doctype html
 head
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
   link(rel='stylesheet' href='styles.css')
-  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css')
+  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css')
   title Winstagram
 nav
   ul.menu
@@ -20,17 +20,20 @@ nav
         button.menu-button(onclick="openForm('signupFormPopup')") Sign up
     li.toggle
       a(href='#')
-        i.fas.fa-bars
+        i.fa-solid.fa-bars
 .main
   .header
     h1 WeHelp Photo Sharing
+
+  if username
+    i.fa-regular.fa-square-plus.fa-2x.upload-button(onclick="openForm('uploadFormPopup')")
 #blur.popup-blur
 #loginFormPopup.form-popup
   form#loginForm.form-container
     .form-header
       h2 Log in
       button.x-button(type='reset' onclick="closeForm('loginFormPopup', 'loginFormMessage')")
-        i.fas.fa-times
+        i.fa-solid.fa-xmark
     input#login-username(type='text' placeholder='Enter username' name='login-username')
     input#login-psw(type='password' placeholder='Enter password' name='login-psw')
     button.btn(type='submit') Log in
@@ -40,12 +43,21 @@ nav
     .form-header
       h2 Sign up
       button.x-button(type='reset' onclick="closeForm('signupFormPopup', 'signupFormMessage')")
-        i.fas.fa-times
+        i.fa-solid.fa-xmark
     input#signup-username(type='text' placeholder='Enter username' name='signup-username')
     input#signup-psw(type='password' placeholder='Enter password' name='signup-psw')
     input#confirm-psw(type='password' placeholder='Re-enter password' name='confirm-psw')
     button.btn(type='submit') Sign up
     p#signupFormMessage.form-warning-msg
+#uploadFormPopup.form-popup
+  form#uploadForm.form-container
+    .form-header
+      h2 Upload image
+      button.x-button(type='reset' onclick="closeForm('uploadFormPopup', 'uploadFormMessage')")
+        i.fa-solid.fa-xmark
+    input#image-upload(type='file' name='image-upload' accept='image/png, image/jpeg')
+    button.btn(type='submit') Post
+    p#uploadFormMessage.form-warning-msg
 script(src='https://unpkg.com/axios/dist/axios.min.js')
 script(src='menu.js' type='module')
 script(src='index.js' type='module')

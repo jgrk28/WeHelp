@@ -6,12 +6,12 @@ function toggleMenu() {
     menu.classList.remove("active");
 
     // adds the menu (hamburger) icon
-    toggle.querySelector("a").innerHTML = '<i class="fas fa-bars"></i>';
+    toggle.querySelector("a").innerHTML = '<i class="fa-solid fa-bars"></i>';
   } else {
     menu.classList.add("active");
 
     // adds the close (x) icon
-    toggle.querySelector("a").innerHTML = '<i class="fas fa-times"></i>';
+    toggle.querySelector("a").innerHTML = '<i class="fa-solid fa-xmark"></i>';
   }
 }
 
@@ -28,39 +28,18 @@ export function closeForm(formId, messageId) {
   document.getElementById(messageId).innerHTML = "";
 }
 
-export function validateLoginInput() {
-  let username = document.getElementById("login-username").value;
-  let psw = document.getElementById("login-psw").value;
-  if (!username || !psw) {
-    document.getElementById("loginFormMessage").innerHTML =
-      "Please fill in all fields.";
+export function validateLoginInput(username, password, message) {
+  if (!username || !password) {
+    message.innerHTML = "Please fill in all fields.";
     return false;
   }
   return true;
 }
 
-export function validateSignupInput() {
-  let username = document.getElementById("signup-username").value;
-  let psw = document.getElementById("signup-psw").value;
-  let pswConfirm = document.getElementById("confirm-psw").value;
-
-  if (!username || !psw || !pswConfirm) {
-    document.getElementById("signupFormMessage").innerHTML =
-      "Please fill in all fields.";
-    return false;
-  }
-  if (psw != pswConfirm) {
-    document.getElementById("signupFormMessage").innerHTML =
-      "Passwords do not match.";
-    return false;
-  }
-  return true;
-}
-
-export async function login() {
+export async function login(username, password, message) {
   const body = {
-    username: document.getElementById("login-username").value,
-    password: document.getElementById("login-psw").value,
+    username: username,
+    password: password,
   };
   try {
     let response = await axios({
@@ -74,16 +53,27 @@ export async function login() {
   } catch (error) {
     console.log(error.response);
     if (error.response.data) {
-      document.getElementById("loginFormMessage").innerHTML =
-        error.response.data;
+      message.innerHTML = error.response.data;
     }
   }
 }
 
-export async function signup() {
+export function validateSignupInput(username, password, passwordConfirm, message) {
+  if (!username || !password || !passwordConfirm) {
+    message.innerHTML = "Please fill in all fields.";
+    return false;
+  }
+  if (password != passwordConfirm) {
+    message.innerHTML = "Passwords do not match.";
+    return false;
+  }
+  return true;
+}
+
+export async function signup(username, password, message) {
   const body = {
-    username: document.getElementById("signup-username").value,
-    password: document.getElementById("signup-psw").value,
+    username: username,
+    password: password,
   };
   try {
     let response = await axios({
@@ -97,8 +87,7 @@ export async function signup() {
   } catch (error) {
     console.log(error.response);
     if (error.response.data) {
-      document.getElementById("signupFormMessage").innerHTML =
-        error.response.data;
+      message.innerHTML = error.response.data;
     }
   }
 }
