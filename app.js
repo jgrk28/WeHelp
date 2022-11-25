@@ -42,7 +42,8 @@ app.get("/", (req, res) => {
 
 app.get("/member", (req, res) => {
   if (req.session.username) {
-    res.render('member', { username: req.session.username})
+    res.set('Cache-Control', 'no-store');
+    res.render('member', { username: req.session.username })
   } else {
     res.redirect("/");
   }
