@@ -94,8 +94,7 @@ input {
 
 .upload-button {
 	position: fixed;
-	bottom: 30px;
-	size: 50px;
+	bottom: 0px;
 }
 
 .popup-blur {
@@ -177,8 +176,23 @@ input {
 	font-size: 16px;
 }
 
-.member-content {
-	padding: 20px;
+.post-container {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.display-image {
+	aspect-ratio: 1/1;
+	object-fit: cover;
+	width: 100%;
+	height: auto;
+}
+
+.likes {
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
 }
 
 /* Mobile view */
@@ -210,6 +224,11 @@ input {
 	order: 1;
 }
 
+.post-container {
+	max-width: 90%;
+	height: auto;
+}
+
 /* Tablet view */
 
 @media all and (min-width: 600px) {
@@ -235,8 +254,18 @@ input {
 		order: 2;
 		display: none;
 	}
+
+	.post-container {
+		max-width: 70%;
+		height: auto;
+	}
 }
 
 /* Desktop view */
 
-@media all and (min-width: 1200px) {}
+@media all and (min-width: 1200px) {
+	.post-container {
+		max-width: 50%;
+		height: auto;
+	}
+}

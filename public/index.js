@@ -3,6 +3,8 @@ import * as menu from "./menu.js";
 window.openForm = menu.openForm
 window.closeForm = menu.closeForm
 window.signOut = menu.signOut
+window.like = like
+window.unlike = unlike
 
 const loginForm = document.getElementById("loginForm");
 
@@ -75,3 +77,65 @@ function readFileToBlobAsync(file) {
     reader.readAsArrayBuffer(file);
   })
 }
+
+function like(likeButton) {
+  let likeDiv = likeButton.parentElement
+  
+}
+
+function unlike(unlikeButton) {
+  let likeDiv = unlikeButton.parentElement
+}
+
+async function displayImages(page) {
+  try {
+    let response = await axios({
+      method: "GET",
+      url: "/images",
+      params: {
+        page: page
+      }
+    });
+    response.data.forEach(imageData => {
+      let mainFeed = document.getElementById("feed");
+      let newPost = document.createElement("div");
+      newPost.classList.add("post-container");
+
+      let username = document.createElement("p");
+      let nameText = document.createTextNode(imageData.username);
+      username.appendChild(nameText);
+      newPost.appendChild(username);
+
+      let image = document.createElement("img");
+      image.src = imageData.image;
+      image.classList.add("display-image");
+      newPost.appendChild(image);
+
+      let likesDiv = document.createElement("div");
+
+      likesDiv.classList.add("likes");
+      let heart = document.createElement("i");
+      if (imageData.liked) {
+        heart.classList.add("fa-solid");
+        heart.classList.add("fa-heart");
+      } else {
+        heart.classList.add("fa-regular");
+        heart.classList.add("fa-heart");
+      }
+      likesDiv.appendChild(heart);
+
+      let likes = document.createElement("p");
+      let likeNum = document.createTextNode(imageData.likes);
+      likes.appendChild(likeNum);
+      likesDiv.appendChild(likes);
+
+      newPost.appendChild(likesDiv);
+
+      mainFeed.appendChild(newPost);
+    });
+  } catch (error) {
+    console.log(error.response);
+  }
+}
+
+displayImages(1);

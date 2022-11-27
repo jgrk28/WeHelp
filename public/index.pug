@@ -21,12 +21,22 @@ nav
     li.toggle
       a(href='#')
         i.fa-solid.fa-bars
-.main
-  .header
-    h1 WeHelp Photo Sharing
-
+#feed.main
+  .post-container
+    p jacob
+    img.display-image(src='test.jpg')
+    .likes
+      if liked
+        i.fa-solid.fa-heart(onclick="unlike(this)")
+      else
+        i.fa-regular.fa-heart(onclick="like(this)")
+      p 100
   if username
-    i.fa-regular.fa-square-plus.fa-2x.upload-button(onclick="openForm('uploadFormPopup')")
+    span.upload-button
+      span.fa-stack.fa-2x
+        i.fa-solid.fa-square.fa-stack-1x.fa-inverse
+        i.fa-regular.fa-square-plus.fa-stack-1x(onclick="openForm('uploadFormPopup')")
+    
 #blur.popup-blur
 #loginFormPopup.form-popup
   form#loginForm.form-container
