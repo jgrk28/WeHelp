@@ -43,7 +43,7 @@ async function uploadImage(file, message) {
   let fileBlob = await readFileToBlobAsync(file);
 
   const form = new FormData();
-  form.append("file", fileBlob, file.name);
+  form.append("image", fileBlob);
 
   try {
     let response = await axios({

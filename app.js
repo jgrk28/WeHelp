@@ -4,6 +4,9 @@ import parser from "body-parser";
 import session from "express-session";
 import { promisify } from "util";
 import dotenv from "dotenv";
+import AWS from "aws-sdk";
+import multer from "multer";
+import multerS3 from "multer-s3";
 dotenv.config();
 
 const app = express();
@@ -21,9 +24,25 @@ conn.connect((err) => {
 });
 const promiseQuery = promisify(conn.query).bind(conn);
 
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
+});
+
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: process.env.AWS_S3_BUCKET_NAME,
+    key: function (req, file, cb) {
+      cb(null, `${req.session.username}_${Date.now().toString()}`);
+    },
+  }),
+});
+
 app.use(express.static("public"));
 
 app.use(parser.json());
+app.use(parser.urlencoded({ extended: true }));
 
 app.use(
   session({
@@ -33,17 +52,17 @@ app.use(
   })
 );
 
-app.set('view engine', 'pug');
-app.set('views', './public')
+app.set("view engine", "pug");
+app.set("views", "./public");
 
 app.get("/", (req, res) => {
-  res.render('index', { username: req.session.username });
+  res.render("index", { username: req.session.username });
 });
 
 app.get("/member", (req, res) => {
   if (req.session.username) {
-    res.set('Cache-Control', 'no-store');
-    res.render('member', { username: req.session.username })
+    res.set("Cache-Control", "no-store");
+    res.render("member", { username: req.session.username });
   } else {
     res.redirect("/");
   }
@@ -94,12 +113,18 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-// app.post("/image", (req, res) => {
-//   //confirm session exists?
-//   let username = req.session.username;
-//   let image = req.body.file;
-  
-// });
+app.post("/image", upload.single("image"), async (req, res) => {
+  //confirm session exists?
+  let username = req.session.username;
+  let image = req.file;
+
+  try {
+    // const insertQuery = `INSERT INTO users (username, password) VALUES ('${username}', '${password}')`;
+    // res.send("Image successfully uploaded");
+  } catch (error) {
+    throw error;
+  }
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on ${port}`);
