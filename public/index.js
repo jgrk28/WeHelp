@@ -1,10 +1,9 @@
 import * as menu from "./menu.js";
 
-window.openForm = menu.openForm
-window.closeForm = menu.closeForm
-window.signOut = menu.signOut
-window.like = like
-window.unlike = unlike
+window.openForm = menu.openForm;
+window.closeForm = menu.closeForm;
+window.signOut = menu.signOut;
+window.toggleLike = toggleLike;
 
 const loginForm = document.getElementById("loginForm");
 
@@ -41,10 +40,10 @@ uploadForm.addEventListener("submit", (e) => {
 });
 
 async function uploadImage(file, message) {
-  let fileBlob = await readFileToBlobAsync(file)
+  let fileBlob = await readFileToBlobAsync(file);
 
   const form = new FormData();
-  form.append('file', fileBlob, file.name);
+  form.append("file", fileBlob, file.name);
 
   try {
     let response = await axios({
@@ -75,16 +74,31 @@ function readFileToBlobAsync(file) {
     reader.onerror = reject;
 
     reader.readAsArrayBuffer(file);
-  })
+  });
 }
 
-function like(likeButton) {
-  let likeDiv = likeButton.parentElement
-  
-}
+function toggleLike(likeButton) {
+  let isLiked = likeButton.classList.contains("fa-solid") ? true : false;
 
-function unlike(unlikeButton) {
-  let likeDiv = unlikeButton.parentElement
+  let likeDiv = likeButton.parentElement;
+  let likesElement = likeDiv.querySelector(".likes-number");
+  let likes = Number(likesElement.innerText);
+
+  if (isLiked) {
+    // Unlike
+    // todo: call api
+    likes -= 1;
+    likeButton.classList.remove("fa-solid");
+    likeButton.classList.add("fa-regular");
+    likesElement.innerHTML = likes;
+  } else {
+    // Like
+    // todo: call api
+    likes += 1;
+    likeButton.classList.remove("fa-regular");
+    likeButton.classList.add("fa-solid");
+    likesElement.innerHTML = likes;
+  }
 }
 
 async function displayImages(page) {
@@ -93,10 +107,10 @@ async function displayImages(page) {
       method: "GET",
       url: "/images",
       params: {
-        page: page
-      }
+        page: page,
+      },
     });
-    response.data.forEach(imageData => {
+    response.data.forEach((imageData) => {
       let mainFeed = document.getElementById("feed");
       let newPost = document.createElement("div");
       newPost.classList.add("post-container");
