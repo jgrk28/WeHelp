@@ -34,7 +34,7 @@ const upload = multer({
     s3: s3,
     bucket: process.env.AWS_S3_BUCKET_NAME,
     key: function (req, file, cb) {
-      cb(null, `${req.session.username}_${Date.now().toString()}`);
+      cb(null, `${req.session.userid}_${Date.now().toString()}`);
     },
   }),
 });
@@ -70,12 +70,13 @@ app.get("/member", (req, res) => {
 
 app.post("/login", (req, res) => {
   let username = req.body.username;
-  const sqlQuery = `SELECT password FROM users WHERE username = '${username}'`;
+  const sqlQuery = `SELECT password, id FROM users WHERE username = '${username}'`;
   conn.query(sqlQuery, (err, result) => {
     if (err) throw err;
     let inputPassword = req.body.password;
     if (result[0] && inputPassword == result[0].password) {
       req.session.username = username;
+      req.session.userid = result[0].id;
       res.sendStatus(200);
     } else {
       res.sendStatus(401);
@@ -105,8 +106,9 @@ app.post("/signup", async (req, res) => {
       res.status(409).send("Username already exists.");
       return;
     }
-    await promiseQuery(insertQuery);
+    let insertResult = await promiseQuery(insertQuery);
     req.session.username = username;
+    req.session.userid = insertResult.insertId;
     res.sendStatus(200);
   } catch (error) {
     throw error;
