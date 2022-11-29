@@ -27,6 +27,8 @@ const promiseQuery = promisify(conn.query).bind(conn);
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
+  region: process.env.AWS_S3_REGION,
+  signatureVersion: "v4",
 });
 
 const upload = multer({
@@ -116,13 +118,44 @@ app.post("/signup", async (req, res) => {
 });
 
 app.post("/image", upload.single("image"), async (req, res) => {
-  //confirm session exists?
+  // confirm session exists?
   let userId = req.session.userid;
-  let location = req.file.location;
+  let s3Key = req.file.key;
   try {
-    const insertQuery = `INSERT INTO images (location, user_id) VALUES ('${location}', '${userId}')`;
+    const insertQuery = `INSERT INTO images (s3_image_key, user_id) VALUES ('${s3Key}', '${userId}')`;
     await promiseQuery(insertQuery);
     res.sendStatus(200);
+  } catch (error) {
+    throw error;
+  }
+});
+
+app.get("/images", async (req, res) => {
+  // to add pagination
+
+  try {
+    const getQuery = `SELECT username, s3_image_key FROM images INNER JOIN users ON images.user_id=users.id ORDER BY time DESC LIMIT 10`;
+    let result = await promiseQuery(getQuery);
+    let responseData = [];
+
+    // to add like status in responseData
+    // let userId = req.session.userid;
+
+    result.forEach((image) => {
+      let s3Key = image["s3_image_key"];
+      let username = image["username"];
+      let signedUrl = s3.getSignedUrl("getObject", {
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: s3Key,
+        Expires: 3600,
+      });
+      responseData.push({
+        image: signedUrl,
+        username: username,
+      });
+    });
+
+    res.status(200).send(responseData);
   } catch (error) {
     throw error;
   }
