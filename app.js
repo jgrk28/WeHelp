@@ -117,12 +117,12 @@ app.post("/signup", async (req, res) => {
 
 app.post("/image", upload.single("image"), async (req, res) => {
   //confirm session exists?
-  let username = req.session.username;
-  let image = req.file;
-
+  let userId = req.session.userid;
+  let location = req.file.location;
   try {
-    // const insertQuery = `INSERT INTO users (username, password) VALUES ('${username}', '${password}')`;
-    // res.send("Image successfully uploaded");
+    const insertQuery = `INSERT INTO images (location, user_id) VALUES ('${location}', '${userId}')`;
+    await promiseQuery(insertQuery);
+    res.sendStatus(200);
   } catch (error) {
     throw error;
   }
