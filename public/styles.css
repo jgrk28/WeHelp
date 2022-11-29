@@ -7,7 +7,7 @@
 }
 
 body {
-	font-size: 20px;
+	font-size: 18px;
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
 		Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
@@ -47,7 +47,6 @@ input {
 }
 
 .menu-button {
-	font-size: 16px;
 	border: none;
 	background-color: #ffffff00;
 	cursor: pointer;
@@ -56,10 +55,6 @@ input {
 .logo a:hover,
 .menu-button:hover {
 	color: #676767;
-}
-
-.menu-text {
-	font-size: 16px;
 }
 
 .x-button {
@@ -74,6 +69,7 @@ input {
 
 .main {
 	margin-top: 74px;
+	margin-bottom: 74px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -181,7 +177,8 @@ input {
 .post-container {
 	display: flex;
 	flex-direction: column;
-	gap: 5px;
+	gap: 10px;
+	margin: 10px;
 }
 
 .display-image {
@@ -227,7 +224,7 @@ input {
 }
 
 .post-container {
-	max-width: 90%;
+	width: 90%;
 	height: auto;
 }
 
@@ -258,7 +255,7 @@ input {
 	}
 
 	.post-container {
-		max-width: 70%;
+		width: 70%;
 		height: auto;
 	}
 }
@@ -267,7 +264,7 @@ input {
 
 @media all and (min-width: 1200px) {
 	.post-container {
-		max-width: 50%;
+		width: 50%;
 		height: auto;
 	}
 }
