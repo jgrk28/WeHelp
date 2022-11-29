@@ -11,6 +11,7 @@ loginForm.addEventListener("submit", (e) => {
   let username = document.getElementById("login-username").value;
   let password = document.getElementById("login-psw").value;
   let message = document.getElementById("loginFormMessage");
+  message.classList.add("form-warning-msg");
   e.preventDefault();
   if (menu.validateLoginInput(username, password, message)) {
     menu.login(username, password, message);
@@ -24,6 +25,7 @@ signupForm.addEventListener("submit", (e) => {
   let password = document.getElementById("signup-psw").value;
   let passwordConfirm = document.getElementById("confirm-psw").value;
   let message = document.getElementById("signupFormMessage");
+  message.classList.add("form-warning-msg");
   e.preventDefault();
   if (menu.validateSignupInput(username, password, passwordConfirm, message)) {
     menu.signup(username, password, message);
@@ -46,6 +48,10 @@ async function uploadImage(file, message) {
   form.append("image", fileBlob);
 
   try {
+    message.innerHTML = "Image uploading...";
+    document.getElementById("image-upload").disabled = true;
+    document.getElementById("image-upload-btn").style.display = "none";
+
     let response = await axios({
       method: "POST",
       url: "/image",
@@ -58,6 +64,7 @@ async function uploadImage(file, message) {
   } catch (error) {
     console.log(error.response);
     if (error.response.data) {
+      message.classList.add("form-warning-msg");
       message.innerHTML = error.response.data;
     }
   }

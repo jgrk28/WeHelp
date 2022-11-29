@@ -47,7 +47,7 @@ nav
     input#login-username(type='text' placeholder='Enter username' name='login-username')
     input#login-psw(type='password' placeholder='Enter password' name='login-psw')
     button.btn(type='submit') Log in
-    p#loginFormMessage.form-warning-msg
+    p#loginFormMessage.form-msg
 #signupFormPopup.form-popup
   form#signupForm.form-container
     .form-header
@@ -58,7 +58,7 @@ nav
     input#signup-psw(type='password' placeholder='Enter password' name='signup-psw')
     input#confirm-psw(type='password' placeholder='Re-enter password' name='confirm-psw')
     button.btn(type='submit') Sign up
-    p#signupFormMessage.form-warning-msg
+    p#signupFormMessage.form-msg
 #uploadFormPopup.form-popup
   form#uploadForm.form-container
     .form-header
@@ -66,8 +66,8 @@ nav
       button.x-button(type='reset' onclick="closeForm('uploadFormPopup', 'uploadFormMessage')")
         i.fa-solid.fa-xmark
     input#image-upload(type='file' name='image-upload' accept='image/png, image/jpeg' required)
-    button.btn(type='submit') Post
-    p#uploadFormMessage.form-warning-msg
+    button#image-upload-btn.btn(type='submit') Post
+    p#uploadFormMessage.form-msg
 script(src='https://unpkg.com/axios/dist/axios.min.js')
 script(src='menu.js' type='module')
 script(src='index.js' type='module')
