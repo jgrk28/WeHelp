@@ -132,9 +132,15 @@ app.post("/image", upload.single("image"), async (req, res) => {
 
 app.get("/images", async (req, res) => {
   // to add pagination
+  let page = req.query.page;
+  let pageSize = req.query.pageSize;
+  let offset = (page - 1) * pageSize;
 
   try {
-    const getQuery = `SELECT username, s3_image_key FROM images INNER JOIN users ON images.user_id=users.id ORDER BY time DESC LIMIT 10`;
+    const getQuery = `SELECT username, s3_image_key FROM images 
+      INNER JOIN users ON images.user_id=users.id 
+      ORDER BY time DESC 
+      LIMIT ${pageSize} OFFSET ${offset}`;
     let result = await promiseQuery(getQuery);
     let responseData = [];
 

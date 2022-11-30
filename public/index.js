@@ -108,15 +108,20 @@ function toggleLike(likeButton) {
   }
 }
 
-async function displayImages(page) {
+async function displayImages() {
   try {
+    let pageSize = 10;
     let response = await axios({
       method: "GET",
       url: "/images",
       params: {
-        page: page,
+        page: currentPage,
+        pageSize: pageSize,
       },
     });
+    if (response.data.length < pageSize) {
+      isLastPage = true;
+    }
     response.data.forEach((imageData) => {
       let mainFeed = document.getElementById("feed");
       let newPost = document.createElement("div");
@@ -159,4 +164,19 @@ async function displayImages(page) {
   }
 }
 
-displayImages(1);
+let currentPage = 1;
+let isLastPage = false;
+displayImages();
+
+window.addEventListener('scroll', () => {
+  const {
+    scrollTop,
+    scrollHeight,
+    clientHeight
+  } = document.documentElement;
+
+  if (scrollTop + clientHeight >= scrollHeight && !isLastPage) {
+    currentPage++;
+    displayImages();
+  }
+})
