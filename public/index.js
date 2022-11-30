@@ -84,27 +84,57 @@ function readFileToBlobAsync(file) {
   });
 }
 
-function toggleLike(likeButton) {
+async function toggleLike(likeButton) {
   let isLiked = likeButton.classList.contains("fa-solid") ? true : false;
 
   let likeDiv = likeButton.parentElement;
   let likesElement = likeDiv.querySelector(".likes-number");
   let likes = Number(likesElement.innerText);
 
+  let postDiv = likeDiv.parentElement;
+  let imageElement = postDiv.querySelector(".display-image");
+  let s3Url = imageElement.src
+  s3Url = s3Url.split("?")[0];
+  let s3Key = s3Url.split("/").pop();
+
+  
   if (isLiked) {
     // Unlike
-    // todo: call api
-    likes -= 1;
-    likeButton.classList.remove("fa-solid");
-    likeButton.classList.add("fa-regular");
-    likesElement.innerHTML = likes;
+    let url = "/images/" + s3Key + "/like"
+    try {
+      let response = await axios({
+        method: "DELETE",
+        url: url,
+      });
+      if (response.status == 200) {
+        likes -= 1;
+        likeButton.classList.remove("fa-solid");
+        likeButton.classList.add("fa-regular");
+        likesElement.innerHTML = likes;
+      }
+    } catch(error) {
+      console.log(error.response);
+    }
+    
   } else {
     // Like
-    // todo: call api
-    likes += 1;
-    likeButton.classList.remove("fa-regular");
-    likeButton.classList.add("fa-solid");
-    likesElement.innerHTML = likes;
+    try {
+      let url = "/images/" + s3Key + "/like"
+      let response = await axios({
+        method: "POST",
+        url: url,
+      });
+      if (response.status == 200) {
+        likes += 1;
+        likeButton.classList.remove("fa-regular");
+        likeButton.classList.add("fa-solid");
+        likesElement.innerHTML = likes;
+      }
+    } catch(error) {
+      console.log(error.response);
+    }
+    
+    
   }
 }
 
@@ -154,9 +184,13 @@ async function displayImages() {
         heart.classList.add("fa-regular");
         heart.classList.add("fa-heart");
       }
+      heart.onclick = function() {
+        toggleLike(this);
+      }
       likesDiv.appendChild(heart);
 
       let likes = document.createElement("p");
+      likes.classList.add("likes-number");
       let likeNum = document.createTextNode(imageData.likes);
       likes.appendChild(likeNum);
       likesDiv.appendChild(likes);
