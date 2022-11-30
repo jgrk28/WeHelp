@@ -186,6 +186,7 @@ input {
 	object-fit: cover;
 	width: 100%;
 	height: auto;
+	background: url(loading.gif) 50% no-repeat;
 }
 
 .likes {

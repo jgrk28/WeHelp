@@ -133,8 +133,14 @@ async function displayImages() {
       newPost.appendChild(username);
 
       let image = document.createElement("img");
-      image.src = imageData.image;
       image.classList.add("display-image");
+
+      let downloadingImage = new Image();
+      downloadingImage.onload = (event) => {
+        image.src = event.target.src;
+      }
+      downloadingImage.src = imageData.image;
+
       newPost.appendChild(image);
 
       let likesDiv = document.createElement("div");
