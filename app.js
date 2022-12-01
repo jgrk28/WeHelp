@@ -167,6 +167,43 @@ app.get("/images", async (req, res) => {
   }
 });
 
+app.post("/images/:image_key/like", async (req, res) => {
+  let s3Key = req.params.image_key;
+  let userId = req.session.userid;
+  try {
+    const getQuery = `SELECT id FROM images WHERE s3_image_key = '${s3Key}'`
+    let getResult = await promiseQuery(getQuery);
+    if (!getResult[0]) {
+      res.sendStatus(404);
+    }
+    let imageId = getResult[0]['id'];
+    const insertQuery = `INSERT INTO likes (user_id, image_id) VALUES (${userId}, ${imageId})`;
+    await promiseQuery(insertQuery);
+    res.sendStatus(201);
+  } catch (error) {
+    throw error;
+  }
+});
+
+app.delete("/images/:image_key/like", async (req, res) => {
+  let s3Key = req.params.image_key;
+  let userId = req.session.userid;
+  try {
+    const getQuery = `SELECT id FROM images WHERE s3_image_key = '${s3Key}'`
+    let getResult = await promiseQuery(getQuery);
+    if (!getResult[0]) {
+      res.sendStatus(404);
+    }
+    let imageId = getResult[0]['id'];
+    const deleteQuery = `DELETE FROM likes WHERE user_id = ${userId} AND image_id = ${imageId}`;
+    await promiseQuery(deleteQuery);
+    res.sendStatus(200);
+  } catch (error) {
+    throw error;
+  }
+
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on ${port}`);
 });

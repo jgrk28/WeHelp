@@ -124,7 +124,7 @@ async function toggleLike(likeButton) {
         method: "POST",
         url: url,
       });
-      if (response.status == 200) {
+      if (response.status == 201) {
         likes += 1;
         likeButton.classList.remove("fa-regular");
         likeButton.classList.add("fa-solid");
