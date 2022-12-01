@@ -93,10 +93,7 @@ async function toggleLike(likeButton) {
 
   let postDiv = likeDiv.parentElement;
   let imageElement = postDiv.querySelector(".display-image");
-  let s3Url = imageElement.src
-  s3Url = s3Url.split("?")[0];
-  let s3Key = s3Url.split("/").pop();
-
+  let s3Key = imageElement.dataset.s3
   
   if (isLiked) {
     // Unlike
@@ -164,6 +161,9 @@ async function displayImages() {
 
       let image = document.createElement("img");
       image.classList.add("display-image");
+      let s3Url = imageData.image.split("?")[0];
+      let s3Key = s3Url.split("/").pop();
+      image.setAttribute("data-s3", s3Key);
 
       let downloadingImage = new Image();
       downloadingImage.onload = (event) => {

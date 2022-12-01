@@ -131,25 +131,42 @@ app.post("/image", upload.single("image"), async (req, res) => {
 });
 
 app.get("/images", async (req, res) => {
-  // to add pagination
   let page = req.query.page;
   let pageSize = req.query.pageSize;
   let offset = (page - 1) * pageSize;
 
   try {
-    const getQuery = `SELECT username, s3_image_key FROM images 
+    let userId = req.session.userid;
+    if (!userId) {
+      userId = -1;
+    };
+    const getQuery = `
+      SELECT
+        username,
+        s3_image_key,
+        count(likes.user_id) AS num_likes,
+        IF(
+          EXISTS(
+            SELECT * 
+            FROM likes 
+            WHERE likes.user_id = ${userId} AND likes.image_id = images.id
+            ),
+          true,
+          false) AS liked 
+      FROM images 
       INNER JOIN users ON images.user_id=users.id 
+      LEFT JOIN likes ON likes.image_id=images.id 
+      GROUP BY images.id
       ORDER BY time DESC 
       LIMIT ${pageSize} OFFSET ${offset}`;
     let result = await promiseQuery(getQuery);
-    let responseData = [];
-
-    // to add like status in responseData
-    // let userId = req.session.userid;
+    let responseData = [];    
 
     result.forEach((image) => {
       let s3Key = image["s3_image_key"];
       let username = image["username"];
+      let numLikes = image["num_likes"];
+      let isLiked = image["liked"];
       let signedUrl = s3.getSignedUrl("getObject", {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: s3Key,
@@ -158,6 +175,8 @@ app.get("/images", async (req, res) => {
       responseData.push({
         image: signedUrl,
         username: username,
+        likes: numLikes,
+        liked: isLiked
       });
     });
 
@@ -170,14 +189,17 @@ app.get("/images", async (req, res) => {
 app.post("/images/:image_key/like", async (req, res) => {
   let s3Key = req.params.image_key;
   let userId = req.session.userid;
+  if(!userId) {
+    res.sendStatus(404);
+    return;
+  }
   try {
-    const getQuery = `SELECT id FROM images WHERE s3_image_key = '${s3Key}'`
-    let getResult = await promiseQuery(getQuery);
-    if (!getResult[0]) {
-      res.sendStatus(404);
-    }
-    let imageId = getResult[0]['id'];
-    const insertQuery = `INSERT INTO likes (user_id, image_id) VALUES (${userId}, ${imageId})`;
+    const insertQuery = `
+      INSERT INTO likes (user_id, image_id) 
+      VALUES (
+        ${userId}, 
+        (SELECT id FROM images WHERE s3_image_key = '${s3Key}')
+        )`;
     await promiseQuery(insertQuery);
     res.sendStatus(201);
   } catch (error) {
@@ -188,14 +210,16 @@ app.post("/images/:image_key/like", async (req, res) => {
 app.delete("/images/:image_key/like", async (req, res) => {
   let s3Key = req.params.image_key;
   let userId = req.session.userid;
+  if(!userId) {
+    res.sendStatus(404);
+    return;
+  }
   try {
-    const getQuery = `SELECT id FROM images WHERE s3_image_key = '${s3Key}'`
-    let getResult = await promiseQuery(getQuery);
-    if (!getResult[0]) {
-      res.sendStatus(404);
-    }
-    let imageId = getResult[0]['id'];
-    const deleteQuery = `DELETE FROM likes WHERE user_id = ${userId} AND image_id = ${imageId}`;
+    const deleteQuery = `
+    DELETE FROM likes 
+    WHERE 
+      user_id = ${userId} AND
+      image_id = (SELECT id FROM images WHERE s3_image_key = '${s3Key}')`;
     await promiseQuery(deleteQuery);
     res.sendStatus(200);
   } catch (error) {
