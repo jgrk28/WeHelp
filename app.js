@@ -10,13 +10,13 @@ import multerS3 from "multer-s3";
 dotenv.config();
 
 const app = express();
-const port = 3000;
+const port = process.env.NODE_DOCKER_PORT || 3000;
 
 const conn = createConnection({
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
+  host: process.env.DB_HOST,
+  user: "root",
+  password: process.env.DB_ROOT_PASSWORD,
+  database: process.env.DB_NAME,
 });
 conn.connect((err) => {
   if (err) throw err;
