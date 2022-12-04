@@ -1,12 +1,14 @@
-import express from "express";
-import { createConnection } from "mysql";
-import parser from "body-parser";
-import session from "express-session";
-import { promisify } from "util";
-import dotenv from "dotenv";
 import AWS from "aws-sdk";
+import bcrypt from "bcrypt"
+import parser from "body-parser";
+import dotenv from "dotenv";
+import express from "express";
+import session from "express-session";
 import multer from "multer";
 import multerS3 from "multer-s3";
+import { createConnection } from "mysql";
+import { promisify } from "util";
+
 dotenv.config();
 
 const app = express();
@@ -23,6 +25,8 @@ conn.connect((err) => {
   console.log("Connected!");
 });
 const promiseQuery = promisify(conn.query).bind(conn);
+const promiseHash = promisify(bcrypt.hash);
+const promiseCompare = promisify(bcrypt.compare);
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
@@ -57,6 +61,8 @@ app.use(
 app.set("view engine", "pug");
 app.set("views", "./public");
 
+const saltRounds = 10;
+
 app.get("/", (req, res) => {
   res.render("index", { username: req.session.username });
 });
@@ -70,20 +76,26 @@ app.get("/member", (req, res) => {
   }
 });
 
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
   let username = req.body.username;
   const sqlQuery = `SELECT password, id FROM users WHERE username = '${username}'`;
-  conn.query(sqlQuery, (err, result) => {
-    if (err) throw err;
-    let inputPassword = req.body.password;
-    if (result[0] && inputPassword == result[0].password) {
+  let result = await promiseQuery(sqlQuery);
+
+  let inputPassword = req.body.password;
+
+  if (!result[0]) {
+    res.sendStatus(401);
+  } else {
+    let hash = result[0].password
+    let compareSuccess = await promiseCompare(inputPassword, hash)
+    if (compareSuccess) {
       req.session.username = username;
       req.session.userid = result[0].id;
       res.sendStatus(200);
     } else {
       res.sendStatus(401);
     }
-  });
+  }
 });
 
 app.get("/signout", (req, res) => {
@@ -100,8 +112,9 @@ app.get("/signout", (req, res) => {
 app.post("/signup", async (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
+  let hash = await promiseHash(password, saltRounds);
   const countQuery = `SELECT COUNT(*) FROM users WHERE username = '${username}'`;
-  const insertQuery = `INSERT INTO users (username, password) VALUES ('${username}', '${password}')`;
+  const insertQuery = `INSERT INTO users (username, password) VALUES ('${username}', '${hash}')`;
   try {
     let result = await promiseQuery(countQuery);
     if (result[0]["COUNT(*)"] > 0) {
@@ -160,7 +173,7 @@ app.get("/images", async (req, res) => {
       ORDER BY time DESC 
       LIMIT ${pageSize} OFFSET ${offset}`;
     let result = await promiseQuery(getQuery);
-    let responseData = [];    
+    let responseData = [];
 
     result.forEach((image) => {
       let s3Key = image["s3_image_key"];
@@ -189,7 +202,7 @@ app.get("/images", async (req, res) => {
 app.post("/images/:image_key/like", async (req, res) => {
   let s3Key = req.params.image_key;
   let userId = req.session.userid;
-  if(!userId) {
+  if (!userId) {
     res.sendStatus(404);
     return;
   }
@@ -210,7 +223,7 @@ app.post("/images/:image_key/like", async (req, res) => {
 app.delete("/images/:image_key/like", async (req, res) => {
   let s3Key = req.params.image_key;
   let userId = req.session.userid;
-  if(!userId) {
+  if (!userId) {
     res.sendStatus(404);
     return;
   }
