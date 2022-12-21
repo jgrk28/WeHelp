@@ -155,6 +155,7 @@ app.get("/posts", async (req, res) => {
     };
     const getQuery = `
       SELECT
+        posts.id AS post_id,
         username,
         s3_image_key,
         count(likes.user_id) AS num_likes,
@@ -180,12 +181,14 @@ app.get("/posts", async (req, res) => {
       let username = image["username"];
       let numLikes = image["num_likes"];
       let isLiked = image["liked"];
+      let postId = image["post_id"];
       let signedUrl = s3.getSignedUrl("getObject", {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: s3Key,
         Expires: 3600,
       });
       responseData.push({
+        postid: postId,
         image: signedUrl,
         username: username,
         likes: numLikes,
@@ -199,8 +202,8 @@ app.get("/posts", async (req, res) => {
   }
 });
 
-app.post("/posts/:image_key/like", async (req, res) => {
-  let s3Key = req.params.image_key;
+app.post("/posts/:post_id/like", async (req, res) => {
+  let postId = req.params.post_id;
   let userId = req.session.userid;
   if (!userId) {
     res.sendStatus(404);
@@ -210,9 +213,9 @@ app.post("/posts/:image_key/like", async (req, res) => {
     const insertQuery = `
       INSERT INTO likes (user_id, image_id) 
       VALUES (
-        ${userId}, 
-        (SELECT id FROM posts WHERE s3_image_key = '${s3Key}')
-        )`;
+        ${userId},
+        '${postId}'
+      )`;
     await promiseQuery(insertQuery);
     res.sendStatus(201);
   } catch (error) {
@@ -220,8 +223,8 @@ app.post("/posts/:image_key/like", async (req, res) => {
   }
 });
 
-app.delete("/posts/:image_key/like", async (req, res) => {
-  let s3Key = req.params.image_key;
+app.delete("/posts/:post_id/like", async (req, res) => {
+  let postId = req.params.post_id;
   let userId = req.session.userid;
   if (!userId) {
     res.sendStatus(404);
@@ -232,7 +235,7 @@ app.delete("/posts/:image_key/like", async (req, res) => {
     DELETE FROM likes 
     WHERE 
       user_id = ${userId} AND
-      image_id = (SELECT id FROM posts WHERE s3_image_key = '${s3Key}')`;
+      image_id = '${postId}'`;
     await promiseQuery(deleteQuery);
     res.sendStatus(200);
   } catch (error) {

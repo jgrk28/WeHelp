@@ -93,11 +93,11 @@ async function toggleLike(likeButton) {
 
   let postDiv = likeDiv.parentElement;
   let imageElement = postDiv.querySelector(".display-image");
-  let s3Key = imageElement.dataset.s3
-  
+  let postId = imageElement.dataset.postid;
+
   if (isLiked) {
     // Unlike
-    let url = "/posts/" + s3Key + "/like"
+    let url = "/posts/" + postId + "/like";
     try {
       let response = await axios({
         method: "DELETE",
@@ -116,7 +116,7 @@ async function toggleLike(likeButton) {
   } else {
     // Like
     try {
-      let url = "/posts/" + s3Key + "/like"
+      let url = "/posts/" + postId + "/like";
       let response = await axios({
         method: "POST",
         url: url,
@@ -161,9 +161,8 @@ async function displayImages() {
 
       let image = document.createElement("img");
       image.classList.add("display-image");
-      let s3Url = imageData.image.split("?")[0];
-      let s3Key = s3Url.split("/").pop();
-      image.setAttribute("data-s3", s3Key);
+      let postId = imageData.postid;
+      image.setAttribute("data-postid", postId);
 
       let downloadingImage = new Image();
       downloadingImage.onload = (event) => {
