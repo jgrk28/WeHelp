@@ -130,12 +130,12 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-app.post("/image", upload.single("image"), async (req, res) => {
+app.post("/post", upload.single("image"), async (req, res) => {
   // confirm session exists?
   let userId = req.session.userid;
   let s3Key = req.file.key;
   try {
-    const insertQuery = `INSERT INTO images (s3_image_key, user_id) VALUES ('${s3Key}', '${userId}')`;
+    const insertQuery = `INSERT INTO posts (s3_image_key, user_id) VALUES ('${s3Key}', '${userId}')`;
     await promiseQuery(insertQuery);
     res.sendStatus(200);
   } catch (error) {
@@ -143,7 +143,7 @@ app.post("/image", upload.single("image"), async (req, res) => {
   }
 });
 
-app.get("/images", async (req, res) => {
+app.get("/posts", async (req, res) => {
   let page = req.query.page;
   let pageSize = req.query.pageSize;
   let offset = (page - 1) * pageSize;
@@ -162,14 +162,14 @@ app.get("/images", async (req, res) => {
           EXISTS(
             SELECT * 
             FROM likes 
-            WHERE likes.user_id = ${userId} AND likes.image_id = images.id
+            WHERE likes.user_id = ${userId} AND likes.image_id = posts.id
             ),
           true,
           false) AS liked 
-      FROM images 
-      INNER JOIN users ON images.user_id=users.id 
-      LEFT JOIN likes ON likes.image_id=images.id 
-      GROUP BY images.id
+      FROM posts 
+      INNER JOIN users ON posts.user_id=users.id 
+      LEFT JOIN likes ON likes.image_id=posts.id 
+      GROUP BY posts.id
       ORDER BY time DESC 
       LIMIT ${pageSize} OFFSET ${offset}`;
     let result = await promiseQuery(getQuery);
@@ -199,7 +199,7 @@ app.get("/images", async (req, res) => {
   }
 });
 
-app.post("/images/:image_key/like", async (req, res) => {
+app.post("/posts/:image_key/like", async (req, res) => {
   let s3Key = req.params.image_key;
   let userId = req.session.userid;
   if (!userId) {
@@ -211,7 +211,7 @@ app.post("/images/:image_key/like", async (req, res) => {
       INSERT INTO likes (user_id, image_id) 
       VALUES (
         ${userId}, 
-        (SELECT id FROM images WHERE s3_image_key = '${s3Key}')
+        (SELECT id FROM posts WHERE s3_image_key = '${s3Key}')
         )`;
     await promiseQuery(insertQuery);
     res.sendStatus(201);
@@ -220,7 +220,7 @@ app.post("/images/:image_key/like", async (req, res) => {
   }
 });
 
-app.delete("/images/:image_key/like", async (req, res) => {
+app.delete("/posts/:image_key/like", async (req, res) => {
   let s3Key = req.params.image_key;
   let userId = req.session.userid;
   if (!userId) {
@@ -232,7 +232,7 @@ app.delete("/images/:image_key/like", async (req, res) => {
     DELETE FROM likes 
     WHERE 
       user_id = ${userId} AND
-      image_id = (SELECT id FROM images WHERE s3_image_key = '${s3Key}')`;
+      image_id = (SELECT id FROM posts WHERE s3_image_key = '${s3Key}')`;
     await promiseQuery(deleteQuery);
     res.sendStatus(200);
   } catch (error) {

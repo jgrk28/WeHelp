@@ -54,7 +54,7 @@ async function uploadImage(file, message) {
 
     let response = await axios({
       method: "POST",
-      url: "/image",
+      url: "/post",
       data: form,
       headers: { "Content-Type": "multipart/form-data" },
     });
@@ -97,7 +97,7 @@ async function toggleLike(likeButton) {
   
   if (isLiked) {
     // Unlike
-    let url = "/images/" + s3Key + "/like"
+    let url = "/posts/" + s3Key + "/like"
     try {
       let response = await axios({
         method: "DELETE",
@@ -116,7 +116,7 @@ async function toggleLike(likeButton) {
   } else {
     // Like
     try {
-      let url = "/images/" + s3Key + "/like"
+      let url = "/posts/" + s3Key + "/like"
       let response = await axios({
         method: "POST",
         url: url,
@@ -140,7 +140,7 @@ async function displayImages() {
     let pageSize = 10;
     let response = await axios({
       method: "GET",
-      url: "/images",
+      url: "/posts",
       params: {
         page: currentPage,
         pageSize: pageSize,
