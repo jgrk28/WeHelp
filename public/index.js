@@ -1,10 +1,3 @@
-import * as menu from "./menu.js";
-
-window.openForm = menu.openForm;
-window.closeForm = menu.closeForm;
-window.signOut = menu.signOut;
-window.toggleLike = toggleLike;
-
 const loginForm = document.getElementById("loginForm");
 
 loginForm.addEventListener("submit", (e) => {
@@ -13,8 +6,8 @@ loginForm.addEventListener("submit", (e) => {
   let message = document.getElementById("loginFormMessage");
   message.classList.add("form-warning-msg");
   e.preventDefault();
-  if (menu.validateLoginInput(username, password, message)) {
-    menu.login(username, password, message);
+  if (validateLoginInput(username, password, message)) {
+    login(username, password, message);
   }
 });
 
@@ -27,8 +20,8 @@ signupForm.addEventListener("submit", (e) => {
   let message = document.getElementById("signupFormMessage");
   message.classList.add("form-warning-msg");
   e.preventDefault();
-  if (menu.validateSignupInput(username, password, passwordConfirm, message)) {
-    menu.signup(username, password, message);
+  if (validateSignupInput(username, password, passwordConfirm, message)) {
+    signup(username, password, message);
   }
 });
 
@@ -175,22 +168,29 @@ async function displayImages() {
       let likesDiv = document.createElement("div");
 
       likesDiv.classList.add("likes");
-      let heart = document.createElement("i");
-      if (imageData.liked) {
-        heart.classList.add("fa-solid");
-        heart.classList.add("fa-heart");
-      } else {
-        heart.classList.add("fa-regular");
-        heart.classList.add("fa-heart");
+      if (currentUser) {
+        let heart = document.createElement("i");
+        if (imageData.liked) {
+          heart.classList.add("fa-solid");
+          heart.classList.add("fa-heart");
+        } else {
+          heart.classList.add("fa-regular");
+          heart.classList.add("fa-heart");
+        }
+        heart.onclick = function() {
+          toggleLike(this);
+        }
+        likesDiv.appendChild(heart);
       }
-      heart.onclick = function() {
-        toggleLike(this);
-      }
-      likesDiv.appendChild(heart);
-
       let likes = document.createElement("p");
       likes.classList.add("likes-number");
-      let likeNum = document.createTextNode(imageData.likes);
+      let likesText = imageData.likes
+      if (imageData.likes == 1) {
+        likesText += " like"
+      } else {
+        likesText += " likes"
+      }
+      let likeNum = document.createTextNode(likesText);
       likes.appendChild(likeNum);
       likesDiv.appendChild(likes);
 
@@ -205,6 +205,7 @@ async function displayImages() {
 
 let currentPage = 1;
 let isLastPage = false;
+let currentUser = document.currentScript.getAttribute("username")
 displayImages();
 
 window.addEventListener('scroll', () => {

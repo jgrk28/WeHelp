@@ -17,18 +17,18 @@ function toggleMenu() {
 
 toggle.addEventListener("click", toggleMenu, false);
 
-export function openForm(formId) {
+function openForm(formId) {
   document.getElementById(formId).style.display = "block";
   document.getElementById("blur").style.display = "block";
 }
 
-export function closeForm(formId, messageId) {
+function closeForm(formId, messageId) {
   document.getElementById(formId).style.display = "none";
   document.getElementById("blur").style.display = "none";
   document.getElementById(messageId).innerHTML = "";
 }
 
-export function validateLoginInput(username, password, message) {
+function validateLoginInput(username, password, message) {
   if (!username || !password) {
     message.innerHTML = "Please fill in all fields.";
     return false;
@@ -36,7 +36,7 @@ export function validateLoginInput(username, password, message) {
   return true;
 }
 
-export async function login(username, password, message) {
+async function login(username, password, message) {
   const body = {
     username: username,
     password: password,
@@ -58,7 +58,7 @@ export async function login(username, password, message) {
   }
 }
 
-export function validateSignupInput(username, password, passwordConfirm, message) {
+function validateSignupInput(username, password, passwordConfirm, message) {
   if (!username || !password || !passwordConfirm) {
     message.innerHTML = "Please fill in all fields.";
     return false;
@@ -70,7 +70,7 @@ export function validateSignupInput(username, password, passwordConfirm, message
   return true;
 }
 
-export async function signup(username, password, message) {
+async function signup(username, password, message) {
   const body = {
     username: username,
     password: password,
@@ -92,7 +92,7 @@ export async function signup(username, password, message) {
   }
 }
 
-export async function signOut() {
+async function signOut() {
   try {
     let response = await axios({
       method: "GET",
