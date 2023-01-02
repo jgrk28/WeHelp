@@ -57,6 +57,7 @@ nav
       button.x-button(type='reset' onclick="closeForm('uploadFormPopup', 'uploadFormMessage')")
         i.fa-solid.fa-xmark
     input#image-upload(type='file' name='image-upload' accept='image/png, image/jpeg' required)
+    input#image-upload-caption(type='text' placeholder='Write a caption...' name='caption')
     button#image-upload-btn.btn(type='submit') Post
     p#uploadFormMessage.form-msg
 script(src='https://unpkg.com/axios/dist/axios.min.js')

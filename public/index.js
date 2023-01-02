@@ -29,20 +29,23 @@ const uploadForm = document.getElementById("uploadForm");
 
 uploadForm.addEventListener("submit", (e) => {
   let file = document.getElementById("image-upload").files[0];
-  let message = document.getElementById("uploadFormMessage");
+  let caption = document.getElementById("image-upload-caption").value;
+  let messageElement = document.getElementById("uploadFormMessage");
   e.preventDefault();
-  uploadImage(file, message);
+  uploadImage(file, caption, messageElement);
 });
 
-async function uploadImage(file, message) {
+async function uploadImage(file, caption, messageElement) {
   let fileBlob = await readFileToBlobAsync(file);
 
   const form = new FormData();
   form.append("image", fileBlob);
+  form.append("caption", caption);
 
   try {
-    message.innerHTML = "Image uploading...";
+    messageElement.innerHTML = "Image uploading...";
     document.getElementById("image-upload").disabled = true;
+    document.getElementById("image-upload-caption").disabled = true;
     document.getElementById("image-upload-btn").style.display = "none";
 
     let response = await axios({
@@ -57,8 +60,8 @@ async function uploadImage(file, message) {
   } catch (error) {
     console.log(error.response);
     if (error.response.data) {
-      message.classList.add("form-warning-msg");
-      message.innerHTML = error.response.data;
+      messageElement.classList.add("form-warning-msg");
+      messageElement.innerHTML = error.response.data;
     }
   }
 }

@@ -134,8 +134,9 @@ app.post("/post", upload.single("image"), async (req, res) => {
   // confirm session exists?
   let userId = req.session.userid;
   let s3Key = req.file.key;
+  let caption = req.body.caption;
   try {
-    const insertQuery = `INSERT INTO posts (s3_image_key, user_id) VALUES ('${s3Key}', '${userId}')`;
+    const insertQuery = `INSERT INTO posts (s3_image_key, user_id, caption) VALUES ('${s3Key}', '${userId}', '${caption}')`;
     await promiseQuery(insertQuery);
     res.sendStatus(200);
   } catch (error) {
