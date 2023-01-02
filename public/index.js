@@ -196,6 +196,16 @@ async function displayImages() {
 
       newPost.appendChild(likesDiv);
 
+      let captionDiv = document.createElement("div");
+      let caption = document.createElement("p");
+      if (imageData.caption != null) {
+        let captionText = document.createTextNode(imageData.caption);
+        caption.appendChild(captionText);
+      }
+      captionDiv.appendChild(username.cloneNode(true));
+      captionDiv.appendChild(caption);
+      newPost.appendChild(captionDiv);
+
       mainFeed.appendChild(newPost);
     });
   } catch (error) {

@@ -159,6 +159,7 @@ app.get("/posts", async (req, res) => {
         username,
         s3_image_key,
         count(likes.user_id) AS num_likes,
+        caption,
         IF(
           EXISTS(
             SELECT * 
@@ -176,23 +177,25 @@ app.get("/posts", async (req, res) => {
     let result = await promiseQuery(getQuery);
     let responseData = [];
 
-    result.forEach((image) => {
-      let s3Key = image["s3_image_key"];
-      let username = image["username"];
-      let numLikes = image["num_likes"];
-      let isLiked = image["liked"];
-      let postId = image["post_id"];
+    result.forEach((post) => {
+      let s3Key = post["s3_image_key"];
+      let username = post["username"];
+      let numLikes = post["num_likes"];
+      let isLiked = post["liked"];
+      let postId = post["post_id"];
       let signedUrl = s3.getSignedUrl("getObject", {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: s3Key,
         Expires: 3600,
       });
+      let caption = post["caption"];
       responseData.push({
         postid: postId,
         image: signedUrl,
         username: username,
         likes: numLikes,
-        liked: isLiked
+        liked: isLiked,
+        caption: caption,
       });
     });
 
