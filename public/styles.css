@@ -179,9 +179,12 @@ input {
 	flex-direction: column;
 	gap: 10px;
 	margin: 10px;
+	padding: 10px 0;
+	border: 1px solid #e0e0e0;
+	border-radius: 5px;
 }
 
-.display-image {
+.post-image {
 	aspect-ratio: 1/1;
 	object-fit: cover;
 	width: 100%;
@@ -189,10 +192,20 @@ input {
 	background: url(loading.gif) 50% no-repeat;
 }
 
-.likes {
+.post-likes,
+.post-username {
+	padding: 0 10px;
+}
+
+.post-likes,
+.post-caption {
 	display: flex;
 	flex-direction: row;
 	gap: 5px;
+}
+
+.post-username {
+	font-weight: bold;
 }
 
 /* Mobile view */

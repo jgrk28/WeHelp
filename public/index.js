@@ -88,7 +88,7 @@ async function toggleLike(likeButton) {
   let likes = Number(likesElement.innerText);
 
   let postDiv = likeDiv.parentElement;
-  let imageElement = postDiv.querySelector(".display-image");
+  let imageElement = postDiv.querySelector(".post-image");
   let postId = imageElement.dataset.postid;
 
   if (isLiked) {
@@ -151,12 +151,13 @@ async function displayImages() {
       newPost.classList.add("post-container");
 
       let username = document.createElement("p");
+      username.classList.add("post-username");
       let nameText = document.createTextNode(imageData.username);
       username.appendChild(nameText);
       newPost.appendChild(username);
 
       let image = document.createElement("img");
-      image.classList.add("display-image");
+      image.classList.add("post-image");
       let postId = imageData.postid;
       image.setAttribute("data-postid", postId);
 
@@ -170,7 +171,7 @@ async function displayImages() {
 
       let likesDiv = document.createElement("div");
 
-      likesDiv.classList.add("likes");
+      likesDiv.classList.add("post-likes");
       if (currentUser) {
         let heart = document.createElement("i");
         if (imageData.liked) {
@@ -207,6 +208,7 @@ async function displayImages() {
       }
       captionDiv.appendChild(username.cloneNode(true));
       captionDiv.appendChild(caption);
+      captionDiv.classList.add("post-caption");
       newPost.appendChild(captionDiv);
 
       mainFeed.appendChild(newPost);
