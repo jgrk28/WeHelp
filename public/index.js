@@ -80,12 +80,22 @@ function readFileToBlobAsync(file) {
   });
 }
 
+function likesText(likesNum) {
+  let likesText = likesNum
+  if (likesNum == 1) {
+    likesText += " like"
+  } else {
+    likesText += " likes"
+  }
+  return likesText
+}
+
 async function toggleLike(likeButton) {
   let isLiked = likeButton.classList.contains("fa-solid") ? true : false;
 
   let likeDiv = likeButton.parentElement;
   let likesElement = likeDiv.querySelector(".likes-number");
-  let likes = Number(likesElement.innerText);
+  let likesNum = Number(likesElement.innerText.split(" ")[0]);
 
   let postDiv = likeDiv.parentElement;
   let imageElement = postDiv.querySelector(".post-image");
@@ -100,10 +110,10 @@ async function toggleLike(likeButton) {
         url: url,
       });
       if (response.status == 200) {
-        likes -= 1;
+        likesNum -= 1;
         likeButton.classList.remove("fa-solid");
         likeButton.classList.add("fa-regular");
-        likesElement.innerHTML = likes;
+        likesElement.innerHTML = likesText(likesNum);
       }
     } catch(error) {
       console.log(error.response);
@@ -118,10 +128,10 @@ async function toggleLike(likeButton) {
         url: url,
       });
       if (response.status == 201) {
-        likes += 1;
+        likesNum += 1;
         likeButton.classList.remove("fa-regular");
         likeButton.classList.add("fa-solid");
-        likesElement.innerHTML = likes;
+        likesElement.innerHTML = likesText(likesNum);
       }
     } catch(error) {
       console.log(error.response);
@@ -188,14 +198,8 @@ async function displayImages() {
       }
       let likes = document.createElement("p");
       likes.classList.add("likes-number");
-      let likesText = imageData.likes
-      if (imageData.likes == 1) {
-        likesText += " like"
-      } else {
-        likesText += " likes"
-      }
-      let likeNum = document.createTextNode(likesText);
-      likes.appendChild(likeNum);
+      let likesNum = document.createTextNode(likesText(imageData.likes));
+      likes.appendChild(likesNum);
       likesDiv.appendChild(likes);
 
       newPost.appendChild(likesDiv);
