@@ -92,11 +92,11 @@ async function signup(username, password, message) {
   }
 }
 
-async function signOut() {
+async function logOut() {
   try {
     let response = await axios({
       method: "GET",
-      url: "/signout",
+      url: "/logout",
     });
     if (response.status == 200) {
       location.href = "/";

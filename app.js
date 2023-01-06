@@ -98,7 +98,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/signout", (req, res) => {
+app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       console.error(err);
@@ -130,7 +130,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-app.post("/post", upload.single("image"), async (req, res) => {
+app.post("/posts", upload.single("image"), async (req, res) => {
   // confirm session exists?
   let userId = req.session.userid;
   let s3Key = req.file.key;
@@ -145,9 +145,9 @@ app.post("/post", upload.single("image"), async (req, res) => {
 });
 
 app.get("/posts", async (req, res) => {
-  let page = req.query.page;
+  let pageNum = req.query.pageNum;
   let pageSize = req.query.pageSize;
-  let offset = (page - 1) * pageSize;
+  let offset = (pageNum - 1) * pageSize;
 
   try {
     let userId = req.session.userid;

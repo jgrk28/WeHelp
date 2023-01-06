@@ -50,7 +50,7 @@ async function uploadImage(file, caption, messageElement) {
 
     let response = await axios({
       method: "POST",
-      url: "/post",
+      url: "/posts",
       data: form,
       headers: { "Content-Type": "multipart/form-data" },
     });
@@ -148,7 +148,7 @@ async function displayImages() {
       method: "GET",
       url: "/posts",
       params: {
-        page: currentPage,
+        pageNum: currentPage,
         pageSize: pageSize,
       },
     });
