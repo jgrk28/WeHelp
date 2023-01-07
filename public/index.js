@@ -204,16 +204,16 @@ async function displayImages() {
 
       newPost.appendChild(likesDiv);
 
-      let captionDiv = document.createElement("div");
-      let caption = document.createElement("p");
       if (imageData.caption != null) {
+        let captionDiv = document.createElement("div");
+        let caption = document.createElement("p");
         let captionText = document.createTextNode(imageData.caption);
         caption.appendChild(captionText);
+        captionDiv.appendChild(username.cloneNode(true));
+        captionDiv.appendChild(caption);
+        captionDiv.classList.add("post-caption");
+        newPost.appendChild(captionDiv);
       }
-      captionDiv.appendChild(username.cloneNode(true));
-      captionDiv.appendChild(caption);
-      captionDiv.classList.add("post-caption");
-      newPost.appendChild(captionDiv);
 
       mainFeed.appendChild(newPost);
     });
