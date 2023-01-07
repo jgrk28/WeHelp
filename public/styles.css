@@ -178,8 +178,8 @@ input {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	margin: 10px;
-	padding: 10px 0;
+	margin-top: 30px;
+	padding: 20px 0;
 	border: 1px solid #e0e0e0;
 	border-radius: 5px;
 }
@@ -190,6 +190,7 @@ input {
 	width: 100%;
 	height: auto;
 	background: url(loading.gif) 50% no-repeat;
+	padding: 10px 0;
 }
 
 .post-likes,
@@ -215,6 +216,7 @@ input {
 	flex-wrap: wrap;
 	justify-content: space-between;
 	align-items: center;
+	border-bottom: 1px solid #e0e0e0;
 }
 
 .menu .logo a {
