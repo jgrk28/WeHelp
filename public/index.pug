@@ -10,9 +10,9 @@ nav
       a(href='/') Winstagram
     if username
       li.item
-        a.menu-button(href='member') Welcome, #{username}
+        button.menu-button(onclick="member()") Welcome, #{username}
       li.item
-        button.menu-button(onclick="signOut()") Sign out
+        button.menu-button(onclick="logOut()") Sign out
     else
       li.item
         button.menu-button(onclick="openForm('loginFormPopup')") Log in

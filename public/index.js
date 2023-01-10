@@ -143,10 +143,10 @@ async function toggleLike(likeButton) {
 
 async function displayImages() {
   try {
-    let pageSize = 10;
+    let pageSize = 2;
     let response = await axios({
       method: "GET",
-      url: "/posts",
+      url: imageAPI,
       params: {
         pageNum: currentPage,
         pageSize: pageSize,
@@ -164,6 +164,9 @@ async function displayImages() {
       username.classList.add("post-username");
       let nameText = document.createTextNode(imageData.username);
       username.appendChild(nameText);
+      username.onclick = function() {
+        member(imageData.username);
+      }
       newPost.appendChild(username);
 
       let image = document.createElement("img");
@@ -225,7 +228,28 @@ async function displayImages() {
 let currentPage = 1;
 let isLastPage = false;
 let currentUser = document.currentScript.getAttribute("username")
+let imageAPI = "/posts"
 displayImages();
+
+function removeImages() {
+  let mainFeed = document.getElementById("feed");
+  while (mainFeed.firstChild) {
+    mainFeed.removeChild(mainFeed.lastChild);
+  }
+}
+
+function member() {
+  if (arguments.length == 0) {
+    username = currentUser
+  } else {
+    username = arguments[0]
+  }
+  removeImages();
+  currentPage = 1;
+  isLastPage = false;
+  imageAPI = "/users/" + username + "/posts";
+  displayImages();
+}
 
 window.addEventListener('scroll', () => {
   const {
