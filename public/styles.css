@@ -91,6 +91,8 @@ input {
 .upload-button {
 	position: fixed;
 	bottom: 0px;
+	right: 0px;
+	cursor: pointer;
 }
 
 .popup-blur {
