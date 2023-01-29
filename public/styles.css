@@ -90,8 +90,8 @@ input {
 
 .upload-button {
 	position: fixed;
-	bottom: 0px;
-	right: 0px;
+	bottom: 14px;
+	right: 10px;
 	cursor: pointer;
 }
 
