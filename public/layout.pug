@@ -1,0 +1,67 @@
+html
+  head
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet' href='styles.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css')
+    title Winstagram
+  body
+    nav
+      ul.menu
+        li.logo
+          a(href='/') Winstagram
+        if username
+          li.item
+            a(href='/member') Welcome, #{username}
+          li.item
+            button.menu-button(onclick="logOut()") Sign out
+        else
+          li.item
+            button.menu-button(onclick="openForm('loginFormPopup')") Log in
+          li.item
+            button.menu-button(onclick="openForm('signupFormPopup')") Sign up
+        li.toggle
+          a(href='#')
+            i.fa-solid.fa-bars
+    .main#feed
+      block content
+      if username
+        span.upload-button
+          span.fa-stack.fa-lg
+            i.fa-solid.fa-circle.fa-stack-2x.fa-inverse
+            i.fa-solid.fa-circle-plus.fa-stack-2x(onclick="openForm('uploadFormPopup')")
+      #blur.popup-blur
+      #loginFormPopup.form-popup
+        form#loginForm.form-container
+          .form-header
+            h2 Log in
+            button.x-button(type='reset' onclick="closeForm('loginFormPopup', 'loginFormMessage')")
+              i.fa-solid.fa-xmark
+          input#login-username(type='text' placeholder='Enter username' name='login-username')
+          input#login-psw(type='password' placeholder='Enter password' name='login-psw')
+          button.btn(type='submit') Log in
+          p#loginFormMessage.form-msg
+      #signupFormPopup.form-popup
+        form#signupForm.form-container
+          .form-header
+            h2 Sign up
+            button.x-button(type='reset' onclick="closeForm('signupFormPopup', 'signupFormMessage')")
+              i.fa-solid.fa-xmark
+          input#signup-username(type='text' placeholder='Enter username' name='signup-username')
+          input#signup-psw(type='password' placeholder='Enter password' name='signup-psw')
+          input#confirm-psw(type='password' placeholder='Re-enter password' name='confirm-psw')
+          button.btn(type='submit') Sign up
+          p#signupFormMessage.form-msg
+      #uploadFormPopup.form-popup
+        form#uploadForm.form-container
+          .form-header
+            h2 Upload image
+            button.x-button(type='reset' onclick="closeForm('uploadFormPopup', 'uploadFormMessage')")
+              i.fa-solid.fa-xmark
+          input#image-upload(type='file' name='image-upload' accept='image/png, image/jpeg' required)
+          input#image-upload-caption(type='text' placeholder='Write a caption...' name='caption')
+          button#image-upload-btn.btn(type='submit') Post
+          p#uploadFormMessage.form-msg
+block scripts
+  script(src='https://unpkg.com/axios/dist/axios.min.js')
+  script(src='menu.js')
+  script(src='posts.js')

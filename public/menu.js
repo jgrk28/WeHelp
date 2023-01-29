@@ -105,3 +105,30 @@ async function logOut() {
     console.log(error.response);
   }
 }
+
+const loginForm = document.getElementById("loginForm");
+
+loginForm.addEventListener("submit", (e) => {
+  let username = document.getElementById("login-username").value;
+  let password = document.getElementById("login-psw").value;
+  let message = document.getElementById("loginFormMessage");
+  message.classList.add("form-warning-msg");
+  e.preventDefault();
+  if (validateLoginInput(username, password, message)) {
+    login(username, password, message);
+  }
+});
+
+const signupForm = document.getElementById("signupForm");
+
+signupForm.addEventListener("submit", (e) => {
+  let username = document.getElementById("signup-username").value;
+  let password = document.getElementById("signup-psw").value;
+  let passwordConfirm = document.getElementById("confirm-psw").value;
+  let message = document.getElementById("signupFormMessage");
+  message.classList.add("form-warning-msg");
+  e.preventDefault();
+  if (validateSignupInput(username, password, passwordConfirm, message)) {
+    signup(username, password, message);
+  }
+});
