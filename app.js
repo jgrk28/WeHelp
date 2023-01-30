@@ -147,75 +147,17 @@ app.post("/posts", upload.single("image"), async (req, res) => {
 app.get("/posts", async (req, res) => {
   let pageNum = req.query.pageNum;
   let pageSize = req.query.pageSize;
-  let offset = (pageNum - 1) * pageSize;
-
-  try {
-    let userId = req.session.userid;
-    if (!userId) {
-      userId = -1;
-    };
-    const getQuery = `
-      SELECT
-        posts.id AS post_id,
-        username,
-        s3_image_key,
-        count(likes.user_id) AS num_likes,
-        caption,
-        IF(
-          EXISTS(
-            SELECT * 
-            FROM likes 
-            WHERE likes.user_id = ${userId} AND likes.image_id = posts.id
-            ),
-          true,
-          false) AS liked 
-      FROM posts 
-      INNER JOIN users ON posts.user_id=users.id 
-      LEFT JOIN likes ON likes.image_id=posts.id 
-      GROUP BY posts.id
-      ORDER BY time DESC 
-      LIMIT ${pageSize} OFFSET ${offset}`;
-    let result = await promiseQuery(getQuery);
-    let responseData = [];
-
-    result.forEach((post) => {
-      let s3Key = post["s3_image_key"];
-      let username = post["username"];
-      let numLikes = post["num_likes"];
-      let isLiked = post["liked"];
-      let postId = post["post_id"];
-      let signedUrl = s3.getSignedUrl("getObject", {
-        Bucket: process.env.AWS_S3_BUCKET_NAME,
-        Key: s3Key,
-        Expires: 3600,
-      });
-      let caption = post["caption"];
-      responseData.push({
-        postid: postId,
-        image: signedUrl,
-        username: username,
-        likes: numLikes,
-        liked: isLiked,
-        caption: caption,
-      });
-    });
-
-    res.status(200).send(responseData);
-  } catch (error) {
-    throw error;
-  }
-});
-
-app.get("/users/:username/posts", async (req, res) => {
-  let pageNum = req.query.pageNum;
-  let pageSize = req.query.pageSize;
-  let offset = (pageNum - 1) * pageSize;
-
-  let username = req.params.username;
+  let username = req.query.username;
   let userId = req.session.userid;
   if (!userId) {
     userId = -1;
   };
+  let userSelect = '';
+  if (username) {
+    userSelect = `WHERE username='${username}'`;
+  }
+  let offset = (pageNum - 1) * pageSize;
+
   try {
     const getQuery = `
       SELECT
@@ -235,7 +177,7 @@ app.get("/users/:username/posts", async (req, res) => {
       FROM posts 
       INNER JOIN users ON posts.user_id=users.id 
       LEFT JOIN likes ON likes.image_id=posts.id 
-      WHERE username='${username}'
+      ${userSelect}
       GROUP BY posts.id
       ORDER BY time DESC 
       LIMIT ${pageSize} OFFSET ${offset}`;
