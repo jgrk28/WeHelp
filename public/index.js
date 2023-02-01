@@ -88,11 +88,15 @@ let currentUser = document.currentScript.getAttribute("username");
 let imageAPI = "/posts";
 displayImages();
 
-window.addEventListener("scroll", () => {
-  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+const handleInfiniteScroll = () => {
+  const endOfPage =
+    window.innerHeight + window.pageYOffset >= document.body.offsetHeight;
 
-  if (scrollTop + clientHeight >= scrollHeight && !isLastPage) {
+  if (endOfPage && !isLastPage) {
+    console.log("call displayImages ---");
     currentPage++;
     displayImages();
   }
-});
+};
+
+window.addEventListener("scroll", handleInfiniteScroll);
