@@ -6,7 +6,7 @@ displayMemberImages();
 
 async function displayMemberImages() {
   try {
-    let pageSize = 9;
+    let pageSize = 12;
     let response = await axios({
       method: "GET",
       url: imageAPI,
