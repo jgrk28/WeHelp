@@ -2,8 +2,8 @@ extends layout.pug
 
 block append content
   .header
-    h1 WeHelp Photo Sharing
-  p #{username}
+    p #{username}
+  #member-feed.member-images
 
 block append scripts
   script(src='member.js' username=username)

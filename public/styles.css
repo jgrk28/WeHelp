@@ -77,11 +77,10 @@ input {
 
 .header {
 	display: flex;
-	height: 300px;
+	height: 200px;
 	width: 100%;
 	justify-content: center;
 	align-items: center;
-	background: #dcf3fa;
 }
 
 .header h1 {
@@ -195,6 +194,26 @@ input {
 	padding: 10px 0;
 }
 
+.member-images {
+	margin: 15px 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(33%, max-content));
+	grid-gap: 15px;
+	justify-content: center;
+}
+
+.member-image-container {
+	margin: 5px;
+}
+
+.member-image{
+	aspect-ratio: 1/1;
+	object-fit: cover;
+	width: 100%;
+	height: auto;
+	background: url(loading.gif) 50% no-repeat;
+}
+
 .post-likes,
 .post-username {
 	padding-left: 10px;
@@ -246,6 +265,11 @@ input {
 	height: auto;
 }
 
+.member-images {
+	width: 95%;
+	grid-gap: 0;
+}
+
 /* Tablet view */
 
 @media all and (min-width: 600px) {
@@ -272,9 +296,15 @@ input {
 		display: none;
 	}
 
-	.post-container {
+	.post-container{
 		width: 70%;
 		height: auto;
+	}
+
+	.member-images {
+		width: 80%;
+		grid-template-columns: repeat(auto-fit, minmax(26%, max-content));
+		grid-gap: 10px;
 	}
 }
 
@@ -284,5 +314,9 @@ input {
 	.post-container {
 		width: 50%;
 		height: auto;
+	}
+
+	.member-images {
+		max-width: 1200px;
 	}
 }
