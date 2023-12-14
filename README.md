@@ -1,6 +1,10 @@
 # WeHelp
 Materials for WeHelp bootcamp
 
+# Sample Project
+Instagram clone that allows posting, viewing, and liking images.
+
+# Setup
 .env format:
 ```
 MYSQL_ROOT_PASSWORD=<password>
